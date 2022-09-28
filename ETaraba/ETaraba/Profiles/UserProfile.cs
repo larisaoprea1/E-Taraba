@@ -10,7 +10,7 @@ namespace ETaraba.Profiles
         {
             CreateMap<User, UserDTO>();
             CreateMap<UserDTO, User>();
-            CreateMap<UserForCreationDTO, User>();
+            CreateMap<RegisterDTO, User>();
         }
     }
 }

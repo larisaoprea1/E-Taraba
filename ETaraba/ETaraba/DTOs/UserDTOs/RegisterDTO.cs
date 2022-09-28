@@ -2,7 +2,7 @@
 
 namespace ETaraba.DTOs.UserDTOs
 {
-    public class UserForCreationDTO
+    public class RegisterDTO
     {
         [Required]
         [MaxLength(50)]

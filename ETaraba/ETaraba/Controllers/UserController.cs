@@ -3,9 +3,12 @@ using ETaraba.Application.IRepositories;
 using ETaraba.Domain.Models;
 using ETaraba.DTOs.UserDTOs;
 using ETaraba.Infrastructure;
-using ETaraba.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace ETaraba.Controllers
 {
@@ -17,12 +20,14 @@ namespace ETaraba.Controllers
         private readonly RoleManager<UserRole> _roleManager;
         private readonly IMapper _mapper;
         private readonly IUserRepository _userRepository;
-        public UserController(UserManager<User> userManager, RoleManager<UserRole> roleManager, IMapper mapper, IUserRepository userRepository)
+        private readonly IConfiguration _configuration;
+        public UserController(UserManager<User> userManager, RoleManager<UserRole> roleManager, IMapper mapper, IUserRepository userRepository, IConfiguration configuration)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _mapper = mapper;
             _userRepository = userRepository;
+            _configuration = configuration;
         }
         [HttpGet]
         public async Task<IActionResult> GetUserByUserName(string username)
@@ -44,7 +49,7 @@ namespace ETaraba.Controllers
         }
         [HttpPost]
         [Route("register")]
-        public async Task<IActionResult> Register( [FromBody] UserForCreationDTO user)
+        public async Task<IActionResult> Register( [FromBody] RegisterDTO user)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -77,6 +82,38 @@ namespace ETaraba.Controllers
             }        
             return Ok(userToReturn);
         }
-        
+        [HttpPost]
+        [Route("login")]
+        public async Task<IActionResult> Login([FromBody] LoginDTO user)
+        {
+            var userExists = await _userManager.FindByEmailAsync(user.Email);
+            if(userExists != null && await _userManager.CheckPasswordAsync(userExists, user.Password))
+            {
+               var claimsForToken = new List<Claim>
+                {
+                    new Claim("Id", userExists.Id.ToString()),
+                    new Claim("UserName", userExists.UserName),
+                    new Claim("Email", userExists.Email),
+                    new Claim("ProfileImage", userExists.ProfileImgSrc),
+                    new Claim("IsLoggedIn", true.ToString(), ClaimValueTypes.Boolean),
+                };
+
+                var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Authentication:Token"]));
+                var token = new JwtSecurityToken(
+                    issuer: _configuration["Authentication:ValidIssuer"],
+                    audience: _configuration["Authentication:ValidAudience"],
+                    expires: DateTime.Now.AddHours(3),
+                    claims: claimsForToken,
+                    signingCredentials: new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256)
+                 );
+                return Ok(new
+                {
+                    token = new JwtSecurityTokenHandler().WriteToken(token),
+                    expiration = token.ValidTo
+                });
+            }
+            return Unauthorized();
+        }
+
     }
 }

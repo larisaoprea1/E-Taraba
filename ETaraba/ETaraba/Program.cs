@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ETaraba.Infrastructure.Repositories;
 using ETaraba.Application.IRepositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,6 +38,18 @@ builder.Services.AddScoped<IBasketRepository, BasketRepository>();
 
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddAuthentication("Bearer").AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new()
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = builder.Configuration["Authentication:Issuer"],
+        ValidAudience = builder.Configuration["Authentication:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration["Authentication:Token"]))
+    };
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
