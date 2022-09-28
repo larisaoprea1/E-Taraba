@@ -114,6 +114,29 @@ namespace ETaraba.Controllers
             }
             return Unauthorized();
         }
-
+        [HttpPost]
+        [Route("asign-role")]
+        public async Task<IActionResult> AsignRole(string userName, string roleName)
+        {
+            var user = await _userManager.FindByNameAsync(userName);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            var role = await _roleManager.FindByNameAsync(roleName);
+            if(role == null)
+            {
+                var roleAdded = await _roleManager.CreateAsync(new ()
+                {
+                    Name = roleName
+                });
+            }
+            var addRole = await _userManager.AddToRoleAsync(user, roleName);
+            if (!addRole.Succeeded)
+            {
+                return BadRequest("Failed to add role to the user");
+            }
+            return Ok($"User added to {roleName} role");
+        }
     }
 }
