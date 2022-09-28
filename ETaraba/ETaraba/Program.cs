@@ -26,6 +26,7 @@ builder.Services
     .AddUserStore<UserStore<User, UserRole, ETarabaContext, Guid>>()
     .AddRoleStore<RoleStore<UserRole, ETarabaContext, Guid>>();
 
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IOrderProductRepository, OrderProductRepository>();

@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
+using ETaraba.Application.IRepositories;
 using ETaraba.Domain.Models;
 using ETaraba.DTOs.UserDTOs;
 using ETaraba.Infrastructure;
-using Microsoft.AspNetCore.Http;
+using ETaraba.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,17 +16,31 @@ namespace ETaraba.Controllers
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<UserRole> _roleManager;
         private readonly IMapper _mapper;
-        public UserController(UserManager<User> userManager, RoleManager<UserRole> roleManager, IMapper mapper)
+        private readonly IUserRepository _userRepository;
+        public UserController(UserManager<User> userManager, RoleManager<UserRole> roleManager, IMapper mapper, IUserRepository userRepository)
         {
             _userManager = userManager;
             _roleManager = roleManager;
-            _mapper = mapper;   
+            _mapper = mapper;
+            _userRepository = userRepository;
         }
         [HttpGet]
         public async Task<IActionResult> GetUserByUserName(string username)
         {
             var userToFind = await _userManager.FindByNameAsync(username);
             return Ok(_mapper.Map<UserDTO>(userToFind));
+        }
+        [HttpGet("users")]
+        public async Task<ActionResult<IEnumerable<UserDTO>>> GetUsers()
+        {
+            var usersToGet = await _userRepository.GetUsersAsync();
+            return Ok(_mapper.Map<IEnumerable<UserDTO>>(usersToGet));
+        }
+        [HttpGet("{userId}")]
+        public async Task<IActionResult> GetUserById(Guid userId)
+        {
+            var userById = await _userRepository.GetUserAsync(userId);
+            return Ok(_mapper.Map<UserDTO>(userById));
         }
         [HttpPost]
         [Route("register")]
@@ -38,6 +53,10 @@ namespace ETaraba.Controllers
             {
                 return BadRequest("User already exists");
             }
+            var basket = new Basket
+            {
+                Id= Guid.NewGuid()
+            };
             var usertToCreate = new User
             {
                 UserName = user.UserName,
@@ -45,16 +64,19 @@ namespace ETaraba.Controllers
                 LastName = user.LastName,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
-                ProfileImgSrc = user.ProfileImageSrc
+                ProfileImgSrc = user.ProfileImageSrc,
+                Basket = basket,
+                BasketId = basket.Id
 
             };
             var result = await _userManager.CreateAsync(usertToCreate, user.Password);
-            var userToReturn = _mapper.Map<UserDTO>(usertToCreate);
+            var userToReturn =  _mapper.Map<UserDTO>(usertToCreate);
             if (!result.Succeeded)
             {
                 return BadRequest("Failed to create user");
             }        
             return Ok(userToReturn);
         }
+        
     }
 }

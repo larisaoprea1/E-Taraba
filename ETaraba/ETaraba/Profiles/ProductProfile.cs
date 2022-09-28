@@ -10,6 +10,7 @@ namespace ETaraba.Profiles
             CreateMap<Product, ProductDTO>();
             CreateMap<ProductDTO, Product>();
             CreateMap<ProductForCreationDTO, Product>();
+            CreateMap<ProductForUpdatingDTO, Product>();
         }
     }
 }

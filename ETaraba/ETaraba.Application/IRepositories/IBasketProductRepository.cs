@@ -8,7 +8,7 @@ namespace ETaraba.Application.IRepositories
         Task<BasketProduct> GetBasketProductAsync(Guid basketProductId);
         Task AddBasketProductAsync(BasketProduct basketProduct);
         Task UpdateBasketProductAsync(BasketProduct basketProduct);
-        void DeleteOrderProduct(BasketProduct basketProduct);
+        void DeleteBasketProduct(BasketProduct basketProduct);
         Task SaveAsync();
     }
 }

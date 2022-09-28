@@ -34,7 +34,7 @@ namespace ETaraba.Infrastructure.Repositories
         {
             _eTarabaContext.BasketProducts.Update(basketProduct);
         }
-        public void DeleteOrderProduct(BasketProduct basketProduct)
+        public void DeleteBasketProduct(BasketProduct basketProduct)
         {
             _eTarabaContext.BasketProducts.Remove(basketProduct);
 

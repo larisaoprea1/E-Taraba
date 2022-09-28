@@ -2,7 +2,6 @@
 using ETaraba.Application.IRepositories;
 using ETaraba.Domain.Models;
 using ETaraba.DTOs.ProductDTOs;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ETaraba.Controllers
@@ -19,10 +18,16 @@ namespace ETaraba.Controllers
             _productRepository = productRepository ?? throw new ArgumentNullException(nameof(productRepository));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetProduct(Guid id)
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProductsAsync()
         {
-            var product = await _productRepository.GetProductAsync(id);
+            var productsToGet = await _productRepository.GetProductsAsync();
+            return Ok(_mapper.Map<IEnumerable<ProductDTO>>(productsToGet));
+        }
+        [HttpGet("{productId}")]
+        public async Task<IActionResult> GetProduct(Guid productId)
+        {
+            var product = await _productRepository.GetProductAsync(productId);
             if(product == null)
             {
                 return NotFound();
@@ -44,6 +49,39 @@ namespace ETaraba.Controllers
             await _productRepository.SaveAsync();
             var createdProductToReturn = _mapper.Map<ProductDTO>(productToCreate);
             return Ok(createdProductToReturn);
+        }
+        [HttpPut("{productId}")]
+        public async Task<ActionResult<ProductDTO>> UpdateProduct(Guid productId, ProductForUpdatingDTO product)
+        {
+            if(!await _productRepository.GetIfProductExistsAsync(productId))
+            {
+                return NotFound();
+            }
+            var productFromStore = await _productRepository.GetProductAsync(productId);
+            if (productFromStore == null)
+            {
+                return NotFound();
+            }
+            var content =_mapper.Map(product, productFromStore);
+            await _productRepository.SaveAsync();
+
+            return Ok(content);
+        }
+        [HttpDelete("{productId}")]
+        public async Task<ActionResult> DeleteProduct(Guid productId)
+        {
+            if (!await _productRepository.GetIfProductExistsAsync(productId))
+            {
+                return NotFound();
+            }
+           var productToDelete = await _productRepository.GetProductAsync(productId);
+            if(productToDelete == null)
+            {
+                return NotFound();
+            }
+            _productRepository.DeleteProduct(productToDelete);
+            await _productRepository.SaveAsync();
+            return Content("The item has been deleted");
         }
     }
 }

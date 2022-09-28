@@ -1,4 +1,4 @@
-﻿using ETaraba.Domain.Models;
+﻿using ETaraba.DTOs.BasketDTOs;
 
 namespace ETaraba.DTOs.UserDTOs
 {
@@ -11,5 +11,14 @@ namespace ETaraba.DTOs.UserDTOs
         public string LastName { get; set; }
         public string ProfileImgSrc { get; set; }
         public string PhoneNumber { get; set; }
+        //public int NumberOfOrders
+        //{
+        //    get
+        //    {
+        //        return Orders.Count;
+        //    }
+        //}
+        //public ICollection<OrderDTO> Orders { get; set; } = new List<OrderDTO>();
+        public BasketDTO Basket { get; set; }
     }
 }

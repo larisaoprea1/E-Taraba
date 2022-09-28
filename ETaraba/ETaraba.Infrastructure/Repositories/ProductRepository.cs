@@ -32,6 +32,10 @@ namespace ETaraba.Infrastructure.Repositories
         {
             _eTarabaContext.Products.Remove(product);
         }
+        public async Task<bool> GetIfProductExistsAsync(Guid productId)
+        {
+            return await _eTarabaContext.Products.AnyAsync(c => c.Id == productId);
+        }
         public async Task SaveAsync()
         {
             await _eTarabaContext.SaveChangesAsync();

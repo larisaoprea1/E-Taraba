@@ -20,7 +20,7 @@ namespace ETaraba.Infrastructure.Repositories
                 .Where(b=>b.Id == basketId)
                 .FirstOrDefaultAsync();
         }
-        public async Task<IEnumerable<Basket>> GetBasketsAsync(Basket basket)
+        public async Task<IEnumerable<Basket>> GetBasketsAsync()
         {
             return await _eTarabaContext.Baskets
                .Include(o => o.BasketProducts)

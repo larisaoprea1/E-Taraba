@@ -9,6 +9,7 @@ namespace ETaraba.Application.IRepositories
         Task CreateProductAsync(Product product);
         Task UpdateProductAsync(Product product);
         void DeleteProduct(Product product);
+        Task<bool> GetIfProductExistsAsync(Guid productId);
         Task SaveAsync();
     }
 }
