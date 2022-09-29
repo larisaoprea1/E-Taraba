@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using ETaraba.DTOs.OrderProductDTOs;
 
 namespace ETaraba.DTOs.OrderDTOs
 {
@@ -14,5 +13,13 @@ namespace ETaraba.DTOs.OrderDTOs
         public string City { get; set; }
         public string Country { get; set; }
         public decimal Total { get; set; }
+        public int NumberOfOrderProducts
+        {
+            get
+            {
+                return OrderProducts.Count;
+            }
+        }
+        public ICollection<OrderProductDTO> OrderProducts { get; set; } = new List<OrderProductDTO>();
     }
 }

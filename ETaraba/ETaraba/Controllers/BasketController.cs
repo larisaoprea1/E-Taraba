@@ -14,7 +14,9 @@ namespace ETaraba.Controllers
         private readonly IUserRepository _userRepository;
         private readonly IBasketProductRepository _basketProductRepository;
 
-        public BasketController(IProductRepository productRepository, IMapper mapper, IUserRepository userRepository, IBasketProductRepository basketProductRepository)
+        public BasketController(IProductRepository productRepository,
+            IMapper mapper, IUserRepository userRepository,
+            IBasketProductRepository basketProductRepository)
         {
             _productRepository = productRepository ?? throw new ArgumentNullException(nameof(productRepository));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
@@ -36,7 +38,7 @@ namespace ETaraba.Controllers
             };
             await _basketProductRepository.AddBasketProductAsync(item);
             await _basketProductRepository.SaveAsync();
-            return Content("Item added");
+            return Ok("Item added");
         }
         [HttpDelete("{basketProductId}")]
         public async Task<ActionResult> DeleteBasketProduct(Guid basketProductId)
@@ -48,7 +50,7 @@ namespace ETaraba.Controllers
             }
             _basketProductRepository.DeleteBasketProduct(basketProductToDelete);
             await _productRepository.SaveAsync();
-            return Content("The item has been deleted");
+            return Ok("The item has been deleted");
         }
     }
 }

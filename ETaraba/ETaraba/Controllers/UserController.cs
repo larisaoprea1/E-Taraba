@@ -101,13 +101,14 @@ namespace ETaraba.Controllers
                     new Claim("Email", userExists.Email),
                     new Claim("ProfileImage", userExists.ProfileImgSrc),
                     new Claim("IsLoggedIn", true.ToString(), ClaimValueTypes.Boolean),
+                    //new Claim(ClaimTypes.NameIdentifier,userExists.UserName)
                 };
 
                 var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Authentication:Token"]));
                 var token = new JwtSecurityToken(
-                    issuer: _configuration["Authentication:ValidIssuer"],
-                    audience: _configuration["Authentication:ValidAudience"],
-                    expires: DateTime.Now.AddHours(3),
+                    issuer: _configuration["Authentication:Issuer"],
+                    audience: _configuration["Authentication:Audience"],
+                    expires: DateTime.Now.AddHours(1),
                     claims: claimsForToken,
                     signingCredentials: new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256)
                  );
@@ -120,8 +121,8 @@ namespace ETaraba.Controllers
             return Unauthorized();
         }
         [HttpPost]
-        [Route("asign-role")]
-        public async Task<IActionResult> AsignRole(string userName, string roleName)
+        [Route("assign-role")]
+        public async Task<IActionResult> AssignRole(string userName, string roleName)
         {
             var user = await _userManager.FindByNameAsync(userName);
             if (user == null)
@@ -145,15 +146,26 @@ namespace ETaraba.Controllers
         }
         [HttpPost]
         [Route("changepassword")]
+        //public async Task<IActionResult> ChangePassword(ChangePasswordDTO changePassword)
+        //{
+        //    var user = await _userManager.FindByNameAsync(changePassword.UserName);
+        //    if (user == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    var changedPassword = await _userManager.ChangePasswordAsync(user, changePassword.oldPassword, changePassword.newPassword);
+        //    if (!changedPassword.Succeeded)
+        //    {
+        //        return BadRequest("Failed to change password");
+        //    }
+        //    return Ok("Password changed successfully!");
+        //}
         public async Task<IActionResult> ChangePassword(ChangePasswordDTO changePassword)
         {
-            var user = await _userManager.FindByNameAsync(changePassword.UserName);
-            if(user == null)
-            {
-                return NotFound();
-            }
+            string claim = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = await _userManager.FindByNameAsync(claim);
             var changedPassword = await _userManager.ChangePasswordAsync(user, changePassword.oldPassword, changePassword.newPassword);
-            if (changedPassword.Succeeded)
+            if (!changedPassword.Succeeded)
             {
                 return BadRequest("Failed to change password");
             }

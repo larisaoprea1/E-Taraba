@@ -4,9 +4,6 @@ namespace ETaraba.DTOs.UserDTOs
 {
     public class ChangePasswordDTO
     {
-        [Required]
-        [MaxLength(50)]
-        public string UserName { get; set; }
         [DataType(DataType.Password), Required(ErrorMessage = "Old Password Required")]
         public string oldPassword { get; set; }
 

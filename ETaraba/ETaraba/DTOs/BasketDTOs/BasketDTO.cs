@@ -1,5 +1,4 @@
-﻿using ETaraba.Domain.Models;
-using ETaraba.DTOs.BasketProductDTOs;
+﻿using ETaraba.DTOs.BasketProductDTOs;
 
 namespace ETaraba.DTOs.BasketDTOs
 {

@@ -81,7 +81,7 @@ namespace ETaraba.Controllers
             }
             _productRepository.DeleteProduct(productToDelete);
             await _productRepository.SaveAsync();
-            return Content("The item has been deleted");
+            return Ok("The item has been deleted");
         }
     }
 }
