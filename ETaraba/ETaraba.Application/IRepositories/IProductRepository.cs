@@ -6,7 +6,7 @@ namespace ETaraba.Application.IRepositories
     {
         Task<IEnumerable<Product>> GetProductsAsync();
         Task<Product> GetProductAsync(Guid productId);
-        Task CreateProductAsync(Product product);
+        Task<Product> CreateProductAsync(Product product);
         Task UpdateProductAsync(Product product);
         void DeleteProduct(Product product);
         Task<bool> GetIfProductExistsAsync(Guid productId);

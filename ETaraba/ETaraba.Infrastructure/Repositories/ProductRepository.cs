@@ -20,9 +20,10 @@ namespace ETaraba.Infrastructure.Repositories
         {
             return await _eTarabaContext.Products.Where(p => p.Id == productId).FirstOrDefaultAsync();
         }
-        public async Task CreateProductAsync(Product product)
+        public async Task<Product> CreateProductAsync(Product product)
         {
             _eTarabaContext.Products.Add(product);
+            return product ;
         }
         public async Task UpdateProductAsync(Product product)
         {

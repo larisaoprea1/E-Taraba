@@ -1,8 +1,13 @@
 ﻿using AutoMapper;
 using ETaraba.Application.IRepositories;
+using ETaraba.Application.Products.Commands.CreateProduct;
+using ETaraba.Application.Products.Querries.GetAllProducts;
+using ETaraba.Application.Products.Querries.GetProductById;
 using ETaraba.Domain.Models;
 using ETaraba.DTOs.ProductDTOs;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 namespace ETaraba.Controllers
 {
@@ -12,31 +17,37 @@ namespace ETaraba.Controllers
     {
         private readonly IProductRepository _productRepository;
         private readonly IMapper _mapper;
+        private readonly IMediator _mediator;
 
-        public ProductController(IProductRepository productRepository, IMapper mapper)
+        public ProductController(IProductRepository productRepository, IMapper mapper,IMediator mediator)
         {
             _productRepository = productRepository ?? throw new ArgumentNullException(nameof(productRepository));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProductsAsync()
+        public async Task<IActionResult> GetAllProducts()
         {
-            var productsToGet = await _productRepository.GetProductsAsync();
-            return Ok(_mapper.Map<IEnumerable<ProductDTO>>(productsToGet));
+            var result = await _mediator.Send(new GetAllProductsQuery());
+            var products = _mapper.Map<IEnumerable<ProductDTO>>(result);
+            return Ok(products);
         }
         [HttpGet("{productId}")]
-        public async Task<IActionResult> GetProduct(Guid productId)
+        public async Task<IActionResult> GetProduct([FromRoute]Guid productId)
         {
-            var product = await _productRepository.GetProductAsync(productId);
-            if(product == null)
+            var result = await _mediator.Send(new GetProductByIdQuery
+            {
+                Id = productId
+            });
+            if(result == null)
             {
                 return NotFound();
             }
-            return Ok(_mapper.Map<ProductDTO>(product));
+            return Ok(_mapper.Map<ProductDTO>(result));
         }
         [HttpPost]
-        public async Task<ActionResult<ProductDTO>> CreateProduct(ProductForCreationDTO product)
-        {
+        public async Task<IActionResult> CreateProduct([FromBody] ProductForCreationDTO product)
+        {  
             var productToCreate = new Product
             {
                 Name = product.Name,
@@ -45,10 +56,12 @@ namespace ETaraba.Controllers
                 Quantity= product.Quantity,
                 Price = product.Price
             };
-            await _productRepository.CreateProductAsync(productToCreate);
-            await _productRepository.SaveAsync();
-            var createdProductToReturn = _mapper.Map<ProductDTO>(productToCreate);
-            return Ok(createdProductToReturn);
+            var result = await _mediator.Send(new CreateProductCommand
+            {
+                Product = productToCreate
+            });
+            var createdProductToReturn = _mapper.Map<ProductDTO>(result);
+            return CreatedAtAction(nameof(GetProduct), new { productId = createdProductToReturn.Id }, createdProductToReturn);
         }
         [HttpPut("{productId}")]
         public async Task<ActionResult<ProductDTO>> UpdateProduct(Guid productId, ProductForUpdatingDTO product)

@@ -8,6 +8,8 @@ using ETaraba.Application.IRepositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using MediatR;
+using ETaraba.Application;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,7 +19,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
+builder.Services.AddMediatR(typeof(IAssembyMarker));
 //Db Context
 builder.Services.AddDbContext<ETarabaContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ETarabaContext") ?? throw new InvalidOperationException("Connection string 'ETarabaContext' not found.")));
