@@ -101,7 +101,7 @@ namespace ETaraba.Controllers
                     new Claim("Email", userExists.Email),
                     new Claim("ProfileImage", userExists.ProfileImgSrc),
                     new Claim("IsLoggedIn", true.ToString(), ClaimValueTypes.Boolean),
-                    //new Claim(ClaimTypes.NameIdentifier,userExists.UserName)
+                    new Claim(ClaimTypes.NameIdentifier,userExists.UserName)
                 };
 
                 var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Authentication:Token"]));
@@ -146,20 +146,6 @@ namespace ETaraba.Controllers
         }
         [HttpPost]
         [Route("changepassword")]
-        //public async Task<IActionResult> ChangePassword(ChangePasswordDTO changePassword)
-        //{
-        //    var user = await _userManager.FindByNameAsync(changePassword.UserName);
-        //    if (user == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    var changedPassword = await _userManager.ChangePasswordAsync(user, changePassword.oldPassword, changePassword.newPassword);
-        //    if (!changedPassword.Succeeded)
-        //    {
-        //        return BadRequest("Failed to change password");
-        //    }
-        //    return Ok("Password changed successfully!");
-        //}
         public async Task<IActionResult> ChangePassword(ChangePasswordDTO changePassword)
         {
             string claim = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
