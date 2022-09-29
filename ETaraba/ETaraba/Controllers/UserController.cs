@@ -3,6 +3,7 @@ using ETaraba.Application.IRepositories;
 using ETaraba.Domain.Models;
 using ETaraba.DTOs.UserDTOs;
 using ETaraba.Infrastructure;
+using ETaraba.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -21,13 +22,17 @@ namespace ETaraba.Controllers
         private readonly IMapper _mapper;
         private readonly IUserRepository _userRepository;
         private readonly IConfiguration _configuration;
-        public UserController(UserManager<User> userManager, RoleManager<UserRole> roleManager, IMapper mapper, IUserRepository userRepository, IConfiguration configuration)
+        public UserController(UserManager<User> userManager,
+            RoleManager<UserRole> roleManager,
+            IMapper mapper,
+            IUserRepository userRepository,
+            IConfiguration configuration)
         {
-            _userManager = userManager;
-            _roleManager = roleManager;
-            _mapper = mapper;
-            _userRepository = userRepository;
-            _configuration = configuration;
+            _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+            _roleManager = roleManager ?? throw new ArgumentNullException(nameof(roleManager));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper)) ;
+            _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
+            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
         [HttpGet]
         public async Task<IActionResult> GetUserByUserName(string username)
@@ -137,6 +142,39 @@ namespace ETaraba.Controllers
                 return BadRequest("Failed to add role to the user");
             }
             return Ok($"User added to {roleName} role");
+        }
+        [HttpPost]
+        [Route("changepassword")]
+        public async Task<IActionResult> ChangePassword(ChangePasswordDTO changePassword)
+        {
+            var user = await _userManager.FindByNameAsync(changePassword.UserName);
+            if(user == null)
+            {
+                return NotFound();
+            }
+            var changedPassword = await _userManager.ChangePasswordAsync(user, changePassword.oldPassword, changePassword.newPassword);
+            if (changedPassword.Succeeded)
+            {
+                return BadRequest("Failed to change password");
+            }
+            return Ok("Password changed successfully!");
+        }
+        [HttpDelete]
+        [Route("deleteuser/{userId}")]
+        public async Task<ActionResult> DeleteUser(Guid userId)
+        {
+            if (!await _userRepository.GetIfUserExistsAsync(userId))
+            {
+                return NotFound("The user does not exist");
+            }
+            var user = await _userRepository.GetUserAsync(userId);
+            if(user == null)
+            {
+                return NotFound();
+            } 
+             _userRepository.DeleteUser(user);
+            await _userRepository.SaveAsync();
+            return Ok("The user has been deleted");
         }
     }
 }

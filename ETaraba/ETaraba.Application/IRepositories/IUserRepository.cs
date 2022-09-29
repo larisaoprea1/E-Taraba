@@ -6,5 +6,8 @@ namespace ETaraba.Application.IRepositories
     {
         Task<User> GetUserAsync(Guid userId);
         Task<IEnumerable<User>> GetUsersAsync();
+        void DeleteUser(User user);
+        Task<bool> GetIfUserExistsAsync(Guid userId);
+        Task SaveAsync();
     }
 }

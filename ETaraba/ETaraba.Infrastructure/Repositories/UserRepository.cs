@@ -29,5 +29,17 @@ namespace ETaraba.Infrastructure.Repositories
                 .ThenInclude(u=> u.Product)
                 .ToListAsync();
         }
+        public void DeleteUser(User user)
+        {
+            _eTarabaContext.Users.Remove(user);
+        }
+        public async Task<bool> GetIfUserExistsAsync(Guid userId)
+        {
+            return await _eTarabaContext.Users.AnyAsync(u => u.Id == userId);
+        }
+        public async Task SaveAsync()
+        {
+            await _eTarabaContext.SaveChangesAsync();
+        }
     }
 }
