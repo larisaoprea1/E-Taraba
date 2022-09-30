@@ -83,22 +83,18 @@ namespace ETaraba.Controllers
             {
                 UserName = user.UserName
             });
-            if (userUsername == null)
+            if (userUsername != null)
             {
                 return BadRequest("400");
             }
-            //var userEmail = await _mediator.Send(new GetUserByEmailQuery
-            //{
-            //    Email = user.Email
-            //});
-            //if (userEmail == null)
-            //{
-            //    return BadRequest("400");
-            //}
-            var basket = new Basket
+            var userEmail = await _mediator.Send(new GetUserByEmailQuery
             {
-                Id = Guid.NewGuid()
-            };
+                Email = user.Email
+            });
+            if (userEmail != null)
+            {
+                return BadRequest("400");
+            }
             var usertToCreate = new User
             {
                 UserName = user.UserName,
@@ -106,10 +102,7 @@ namespace ETaraba.Controllers
                 LastName = user.LastName,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
-                ProfileImgSrc = user.ProfileImageSrc,
-                Basket = basket,
-                BasketId = basket.Id
-
+                ProfileImgSrc = user.ProfileImageSrc
             };
             var result = await _mediator.Send(new RegisterCommand
             {
@@ -118,10 +111,10 @@ namespace ETaraba.Controllers
                 
             });
             var userToReturn =  _mapper.Map<UserDTO>(result);
-            //if (result == null)
-            //{
-            //    return BadRequest("400");
-            //}
+            if (result == null)
+            {
+                return BadRequest("400");
+            }
             return Ok(userToReturn);
         }
         [HttpPost]
