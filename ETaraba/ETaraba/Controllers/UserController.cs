@@ -1,15 +1,19 @@
 ﻿using AutoMapper;
 using ETaraba.Application.IRepositories;
+using ETaraba.Application.Users.Commands.DeleteUser;
+using ETaraba.Application.Users.Commands.Login;
+using ETaraba.Application.Users.Commands.Register;
+using ETaraba.Application.Users.Querries.GetAllUsers;
+using ETaraba.Application.Users.Querries.GetUserByEmail;
+using ETaraba.Application.Users.Querries.GetUserById;
+using ETaraba.Application.Users.Querries.GetUserByUsername;
 using ETaraba.Domain.Models;
 using ETaraba.DTOs.UserDTOs;
 using ETaraba.Infrastructure;
-using ETaraba.Infrastructure.Repositories;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text;
 
 namespace ETaraba.Controllers
 {
@@ -22,34 +26,51 @@ namespace ETaraba.Controllers
         private readonly IMapper _mapper;
         private readonly IUserRepository _userRepository;
         private readonly IConfiguration _configuration;
+        private readonly IMediator _mediator;
         public UserController(UserManager<User> userManager,
             RoleManager<UserRole> roleManager,
             IMapper mapper,
             IUserRepository userRepository,
-            IConfiguration configuration)
+            IConfiguration configuration, IMediator mediator)
         {
             _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
             _roleManager = roleManager ?? throw new ArgumentNullException(nameof(roleManager));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper)) ;
             _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
-        [HttpGet]
+        [HttpGet("username")]
         public async Task<IActionResult> GetUserByUserName(string username)
         {
-            var userToFind = await _userManager.FindByNameAsync(username);
+            var userToFind = await _mediator.Send(new GetUserByUsernameQuery
+            {
+                UserName = username
+            });
+            return Ok(_mapper.Map<UserDTO>(userToFind));
+        }
+        [HttpGet("email")]
+        public async Task<IActionResult> GetUserByEmail(string email)
+        {
+            var userToFind = await _mediator.Send(new GetUserByEmailQuery
+            {
+                Email = email
+            });
             return Ok(_mapper.Map<UserDTO>(userToFind));
         }
         [HttpGet("users")]
-        public async Task<ActionResult<IEnumerable<UserDTO>>> GetUsers()
+        public async Task<IActionResult> GetUsers()
         {
-            var usersToGet = await _userRepository.GetUsersAsync();
+            var usersToGet = await _mediator.Send(new GetAllUsersQuery());
             return Ok(_mapper.Map<IEnumerable<UserDTO>>(usersToGet));
         }
         [HttpGet("{userId}")]
-        public async Task<IActionResult> GetUserById(Guid userId)
+        public async Task<IActionResult> GetUserById([FromRoute] Guid userId)
         {
-            var userById = await _userRepository.GetUserAsync(userId);
+            var userById = await _mediator.Send(new GetUserByIdQuery
+            {
+                Id = userId
+            });
             return Ok(_mapper.Map<UserDTO>(userById));
         }
         [HttpPost]
@@ -58,14 +79,25 @@ namespace ETaraba.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            var userExist = await _userManager.FindByNameAsync(user.UserName);
-            if(userExist != null)
+            var userUsername = await _mediator.Send(new GetUserByUsernameQuery
             {
-                return BadRequest("User already exists");
+                UserName = user.UserName
+            });
+            if (userUsername == null)
+            {
+                return BadRequest("400");
             }
+            //var userEmail = await _mediator.Send(new GetUserByEmailQuery
+            //{
+            //    Email = user.Email
+            //});
+            //if (userEmail == null)
+            //{
+            //    return BadRequest("400");
+            //}
             var basket = new Basket
             {
-                Id= Guid.NewGuid()
+                Id = Guid.NewGuid()
             };
             var usertToCreate = new User
             {
@@ -79,46 +111,35 @@ namespace ETaraba.Controllers
                 BasketId = basket.Id
 
             };
-            var result = await _userManager.CreateAsync(usertToCreate, user.Password);
-            var userToReturn =  _mapper.Map<UserDTO>(usertToCreate);
-            if (!result.Succeeded)
+            var result = await _mediator.Send(new RegisterCommand
             {
-                return BadRequest("Failed to create user");
-            }        
+                User = usertToCreate,
+                Password = user.Password,
+                
+            });
+            var userToReturn =  _mapper.Map<UserDTO>(result);
+            //if (result == null)
+            //{
+            //    return BadRequest("400");
+            //}
             return Ok(userToReturn);
         }
         [HttpPost]
         [Route("login")]
-        public async Task<IActionResult> Login([FromBody] LoginDTO user)
+        public async Task<object> Login([FromBody] LoginDTO user)
         {
-            var userExists = await _userManager.FindByEmailAsync(user.Email);
-            if(userExists != null && await _userManager.CheckPasswordAsync(userExists, user.Password))
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            var result = await _mediator.Send(new LoginCommand
             {
-               var claimsForToken = new List<Claim>
-                {
-                    new Claim("Id", userExists.Id.ToString()),
-                    new Claim("UserName", userExists.UserName),
-                    new Claim("Email", userExists.Email),
-                    new Claim("ProfileImage", userExists.ProfileImgSrc),
-                    new Claim("IsLoggedIn", true.ToString(), ClaimValueTypes.Boolean),
-                    new Claim(ClaimTypes.NameIdentifier,userExists.UserName)
-                };
-
-                var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Authentication:Token"]));
-                var token = new JwtSecurityToken(
-                    issuer: _configuration["Authentication:Issuer"],
-                    audience: _configuration["Authentication:Audience"],
-                    expires: DateTime.Now.AddHours(1),
-                    claims: claimsForToken,
-                    signingCredentials: new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256)
-                 );
-                return Ok(new
-                {
-                    token = new JwtSecurityTokenHandler().WriteToken(token),
-                    expiration = token.ValidTo
-                });
+                Email = user.Email,
+                Password =user.Password
+            });
+            if(result == "401")
+            {
+                return Unauthorized("401");
             }
-            return Unauthorized();
+            return Ok(result);
         }
         [HttpPost]
         [Route("assign-role")]
@@ -140,9 +161,9 @@ namespace ETaraba.Controllers
             var addRole = await _userManager.AddToRoleAsync(user, roleName);
             if (!addRole.Succeeded)
             {
-                return BadRequest("Failed to add role to the user");
+                return BadRequest("400");
             }
-            return Ok($"User added to {roleName} role");
+            return Ok($"200, {roleName} role");
         }
         [HttpPost]
         [Route("changepassword")]
@@ -153,26 +174,19 @@ namespace ETaraba.Controllers
             var changedPassword = await _userManager.ChangePasswordAsync(user, changePassword.oldPassword, changePassword.newPassword);
             if (!changedPassword.Succeeded)
             {
-                return BadRequest("Failed to change password");
+                return BadRequest("400");
             }
-            return Ok("Password changed successfully!");
+            return Ok("200");
         }
         [HttpDelete]
         [Route("deleteuser/{userId}")]
-        public async Task<ActionResult> DeleteUser(Guid userId)
+        public async Task<ActionResult> DeleteUser([FromRoute] Guid userId)
         {
-            if (!await _userRepository.GetIfUserExistsAsync(userId))
+           await _mediator.Send(new DeleteUserCommand
             {
-                return NotFound("The user does not exist");
-            }
-            var user = await _userRepository.GetUserAsync(userId);
-            if(user == null)
-            {
-                return NotFound();
-            } 
-             _userRepository.DeleteUser(user);
-            await _userRepository.SaveAsync();
-            return Ok("The user has been deleted");
+                Id = userId
+            });
+            return Ok("200");
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ETaraba.Application.IRepositories;
 using ETaraba.Application.Products.Commands.CreateProduct;
+using ETaraba.Application.Products.Commands.DeleteProduct;
 using ETaraba.Application.Products.Querries.GetAllProducts;
 using ETaraba.Application.Products.Querries.GetProductById;
 using ETaraba.Domain.Models;
@@ -41,7 +42,7 @@ namespace ETaraba.Controllers
             });
             if(result == null)
             {
-                return NotFound();
+                return NotFound("404");
             }
             return Ok(_mapper.Map<ProductDTO>(result));
         }
@@ -64,7 +65,7 @@ namespace ETaraba.Controllers
             return CreatedAtAction(nameof(GetProduct), new { productId = createdProductToReturn.Id }, createdProductToReturn);
         }
         [HttpPut("{productId}")]
-        public async Task<ActionResult<ProductDTO>> UpdateProduct(Guid productId, ProductForUpdatingDTO product)
+        public async Task<ActionResult<ProductDTO>> UpdateProduct([FromRoute] Guid productId, ProductForUpdatingDTO product)
         {
             if(!await _productRepository.GetIfProductExistsAsync(productId))
             {
@@ -81,20 +82,13 @@ namespace ETaraba.Controllers
             return Ok(content);
         }
         [HttpDelete("{productId}")]
-        public async Task<ActionResult> DeleteProduct(Guid productId)
+        public async Task<IActionResult> DeleteProduct([FromRoute] Guid productId)
         {
-            if (!await _productRepository.GetIfProductExistsAsync(productId))
+            await _mediator.Send(new DeleteProductCommand
             {
-                return NotFound();
-            }
-           var productToDelete = await _productRepository.GetProductAsync(productId);
-            if(productToDelete == null)
-            {
-                return NotFound();
-            }
-            _productRepository.DeleteProduct(productToDelete);
-            await _productRepository.SaveAsync();
-            return Ok("The item has been deleted");
+                Id = productId
+            });
+            return Ok("200");
         }
     }
 }
