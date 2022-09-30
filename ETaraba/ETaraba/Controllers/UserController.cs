@@ -135,29 +135,18 @@ namespace ETaraba.Controllers
             return Ok(result);
         }
         [HttpPost]
-        [Route("assign-role")]
-        public async Task<IActionResult> AssignRole(string userName, string roleName)
-        {
-            var user = await _userManager.FindByNameAsync(userName);
-            if (user == null)
-            {
-                return NotFound();
-            }
-            var role = await _roleManager.FindByNameAsync(roleName);
-            if(role == null)
-            {
-                var roleAdded = await _roleManager.CreateAsync(new ()
-                {
-                    Name = roleName
-                });
-            }
-            var addRole = await _userManager.AddToRoleAsync(user, roleName);
-            if (!addRole.Succeeded)
-            {
-                return BadRequest("400");
-            }
-            return Ok($"200, {roleName} role");
-        }
+        //[Route("assign-role")]
+        //public async Task<IActionResult> AssignRole(string userName, string roleName)
+        //{
+        //    var user = await _mediator.Send(new GetUserByUsernameQuery
+        //    {
+        //        UserName = userName,
+        //    });
+        //    if (user == null)
+        //    {
+        //        return NotFound("404");
+        //    }
+        //}
         [HttpPost]
         [Route("changepassword")]
         public async Task<IActionResult> ChangePassword(ChangePasswordDTO changePassword)
