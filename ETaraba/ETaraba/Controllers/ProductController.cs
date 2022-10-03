@@ -1,14 +1,13 @@
 ﻿using AutoMapper;
-using ETaraba.Application.IRepositories;
 using ETaraba.Application.Products.Commands.CreateProduct;
 using ETaraba.Application.Products.Commands.DeleteProduct;
+using ETaraba.Application.Products.Commands.UpdateProduct;
 using ETaraba.Application.Products.Querries.GetAllProducts;
 using ETaraba.Application.Products.Querries.GetProductById;
 using ETaraba.Domain.Models;
 using ETaraba.DTOs.ProductDTOs;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 
 namespace ETaraba.Controllers
 {
@@ -16,13 +15,10 @@ namespace ETaraba.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        private readonly IProductRepository _productRepository;
         private readonly IMapper _mapper;
         private readonly IMediator _mediator;
-
-        public ProductController(IProductRepository productRepository, IMapper mapper,IMediator mediator)
+        public ProductController(IMapper mapper,IMediator mediator)
         {
-            _productRepository = productRepository ?? throw new ArgumentNullException(nameof(productRepository));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
@@ -67,19 +63,21 @@ namespace ETaraba.Controllers
         [HttpPut("{productId}")]
         public async Task<ActionResult<ProductDTO>> UpdateProduct([FromRoute] Guid productId, ProductForUpdatingDTO product)
         {
-            if(!await _productRepository.GetIfProductExistsAsync(productId))
+            var result = await _mediator.Send(new UpdateProductCommand
             {
-                return NotFound();
-            }
-            var productFromStore = await _productRepository.GetProductAsync(productId);
-            if (productFromStore == null)
+                Id= productId,
+                Name = product.Name,    
+                Description = product.Description,
+                ProductPhoto = product.ProductPhoto,    
+                Price = product.Price,
+                Quantity= product.Quantity
+            });
+            if(result == null)
             {
-                return NotFound();
+                NotFound("404");
             }
-            var content =_mapper.Map(product, productFromStore);
-            await _productRepository.SaveAsync();
-
-            return Ok(content);
+            var mapResult = _mapper.Map<ProductDTO>(result);
+            return Ok(mapResult);
         }
         [HttpDelete("{productId}")]
         public async Task<IActionResult> DeleteProduct([FromRoute] Guid productId)

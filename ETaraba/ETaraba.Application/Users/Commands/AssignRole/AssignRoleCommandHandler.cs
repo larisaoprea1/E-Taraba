@@ -18,6 +18,7 @@ namespace ETaraba.Application.Users.Commands.AssignRole
         }
         public async Task<bool> Handle(AssignRoleCommand request, CancellationToken cancellationToken)
         {
+            var user = await _userManager.FindByNameAsync(request.UserName);
             var role = await _roleManager.FindByNameAsync(request.RoleName);
             if(role == null)
             {
@@ -26,8 +27,8 @@ namespace ETaraba.Application.Users.Commands.AssignRole
                     Name = request.RoleName
                 });
             }
-            //var addRole = await _userManager.AddToRoleAsync(user, request.RoleName);
-            //return addRole.Succeeded;
+            var addrole = await _userManager.AddToRoleAsync(user, request.RoleName);
+            return addrole.Succeeded;
         }
     }
 }

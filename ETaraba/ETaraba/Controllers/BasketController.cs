@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
-using ETaraba.Application.IRepositories;
-using ETaraba.Domain.Models;
+using ETaraba.Application.Baskets.Commands.AddProductToBasket;
+using ETaraba.Application.Baskets.Commands.DeleteBasketProduct;
+using ETaraba.Application.Baskets.Querries.GetBasketProducts;
+using ETaraba.DTOs.BasketProductDTOs;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ETaraba.Controllers
@@ -9,48 +12,43 @@ namespace ETaraba.Controllers
     [ApiController]
     public class BasketController : ControllerBase
     {
-        private readonly IProductRepository _productRepository;
+        private readonly IMediator _mediator;
         private readonly IMapper _mapper;
-        private readonly IUserRepository _userRepository;
-        private readonly IBasketProductRepository _basketProductRepository;
 
-        public BasketController(IProductRepository productRepository,
-            IMapper mapper, IUserRepository userRepository,
-            IBasketProductRepository basketProductRepository)
+        public BasketController(
+            IMediator mediator, IMapper mapper)
         {
-            _productRepository = productRepository ?? throw new ArgumentNullException(nameof(productRepository));
-            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-            _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));   
-            _basketProductRepository = basketProductRepository ?? throw new ArgumentNullException(nameof(basketProductRepository));
+            _mapper = mapper;
+            _mediator = mediator;
+        }
+        [HttpGet]
+        [Route("basketproducts")]
+        public async Task<IActionResult> GetBasketProducts()
+        {
+            var result = await _mediator.Send(new GetBasketProductsQuery());
+            var mappedResult = _mapper.Map<IEnumerable<BasketProductDTO>>(result);
+            return Ok(mappedResult);
+
         }
         [HttpPost]
         public async Task<IActionResult> AddProductToBasket(Guid userId, Guid productId, int count)
         {
-            
-            var product = await _productRepository.GetProductAsync(productId);
-            var user = await  _userRepository.GetUserAsync(userId);
-            var item = new BasketProduct
+            await _mediator.Send(new AddProductToBasketCommand
             {
-                BasketId= user.BasketId,
+                UserId = userId,
                 ProductId = productId,
-                Quantity = count,
-                Price = product.Price*count
-            };
-            await _basketProductRepository.AddBasketProductAsync(item);
-            await _basketProductRepository.SaveAsync();
-            return Ok("Item added");
+                Count = count
+            });
+            return Ok("200");
         }
         [HttpDelete("{basketProductId}")]
         public async Task<ActionResult> DeleteBasketProduct(Guid basketProductId)
-        { 
-           var basketProductToDelete = await _basketProductRepository.GetBasketProductAsync(basketProductId);
-            if(basketProductToDelete == null)
+        {
+            await _mediator.Send(new DeleteBasketProductCommand
             {
-                return NotFound();
-            }
-            _basketProductRepository.DeleteBasketProduct(basketProductToDelete);
-            await _productRepository.SaveAsync();
-            return Ok("The item has been deleted");
+                Id = basketProductId
+            });
+            return Ok("200");
         }
     }
 }

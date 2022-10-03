@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using ETaraba.Application.IRepositories;
+using ETaraba.Application.Users.Commands.AssignRole;
+using ETaraba.Application.Users.Commands.ChangePassword;
 using ETaraba.Application.Users.Commands.DeleteUser;
 using ETaraba.Application.Users.Commands.Login;
 using ETaraba.Application.Users.Commands.Register;
@@ -21,23 +23,13 @@ namespace ETaraba.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly UserManager<User> _userManager;
-        private readonly RoleManager<UserRole> _roleManager;
         private readonly IMapper _mapper;
-        private readonly IUserRepository _userRepository;
-        private readonly IConfiguration _configuration;
         private readonly IMediator _mediator;
-        public UserController(UserManager<User> userManager,
-            RoleManager<UserRole> roleManager,
+        public UserController(
             IMapper mapper,
-            IUserRepository userRepository,
-            IConfiguration configuration, IMediator mediator)
+            IMediator mediator)
         {
-            _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
-            _roleManager = roleManager ?? throw new ArgumentNullException(nameof(roleManager));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper)) ;
-            _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
-            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
         [HttpGet("username")]
@@ -135,26 +127,42 @@ namespace ETaraba.Controllers
             return Ok(result);
         }
         [HttpPost]
-        //[Route("assign-role")]
-        //public async Task<IActionResult> AssignRole(string userName, string roleName)
-        //{
-        //    var user = await _mediator.Send(new GetUserByUsernameQuery
-        //    {
-        //        UserName = userName,
-        //    });
-        //    if (user == null)
-        //    {
-        //        return NotFound("404");
-        //    }
-        //}
+        [Route("assign-role")]
+        public async Task<IActionResult> AssignRole(string userName, string roleName)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            var user = await _mediator.Send(new GetUserByUsernameQuery
+            {
+                UserName = userName,
+            });
+            if (user == null)
+            {
+                return NotFound("404");
+            }
+            var result = await _mediator.Send(new AssignRoleCommand
+            {
+                UserName = userName,
+                RoleName = roleName
+            });
+            if (!result)
+            {
+                BadRequest("400");
+            }
+            return Ok("200");
+        }
         [HttpPost]
         [Route("changepassword")]
         public async Task<IActionResult> ChangePassword(ChangePasswordDTO changePassword)
         {
             string claim = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var user = await _userManager.FindByNameAsync(claim);
-            var changedPassword = await _userManager.ChangePasswordAsync(user, changePassword.oldPassword, changePassword.newPassword);
-            if (!changedPassword.Succeeded)
+            var result = await _mediator.Send(new ChangePasswordCommand
+            {
+                UserName = claim,
+                oldPassword = changePassword.oldPassword,
+                newPassword = changePassword.newPassword
+            });
+            if (result == false)
             {
                 return BadRequest("400");
             }
