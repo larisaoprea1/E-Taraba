@@ -39,6 +39,14 @@ namespace ETaraba.Infrastructure.Repositories
             _eTarabaContext.BasketProducts.Remove(basketProduct);
 
         }
+        public async Task<bool> GetIfBasketProductExistsAsync(Guid basketProductId)
+        {
+            return await _eTarabaContext.BasketProducts.AnyAsync(c => c.Id == basketProductId);
+        }
+        public async Task<BasketProduct> GetBasketProductByProductIdAsync(Guid basketId, Guid productId)
+        {
+            return await _eTarabaContext.BasketProducts.Where(b => b.BasketId == basketId && b.ProductId == productId).FirstOrDefaultAsync();
+        }
         public async Task SaveAsync()
         {
             await _eTarabaContext.SaveChangesAsync();

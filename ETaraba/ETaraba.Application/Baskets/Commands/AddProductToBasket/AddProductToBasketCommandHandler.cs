@@ -20,6 +20,14 @@ namespace ETaraba.Application.Baskets.Commands.AddProductToBasket
         {
             var product = await _productRepository.GetProductAsync(request.ProductId);
             var user = await _userRepository.GetUserAsync(request.UserId);
+            if(user.Basket.BasketProducts.Any(b=>b.ProductId == request.ProductId))
+            {
+                var basketProduct = await _basketProductRepository.GetBasketProductByProductIdAsync(user.BasketId,request.ProductId);
+                basketProduct.Quantity += request.Count;
+                basketProduct.Price +=request.Count * product.Price;
+                await _basketProductRepository.SaveAsync();
+                return basketProduct;
+            }
             var item = new BasketProduct
             {
                 BasketId = user.BasketId,

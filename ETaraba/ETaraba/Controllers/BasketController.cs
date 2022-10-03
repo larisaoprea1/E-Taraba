@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using ETaraba.Application.Baskets.Commands.AddProductToBasket;
 using ETaraba.Application.Baskets.Commands.DeleteBasketProduct;
-using ETaraba.Application.Baskets.Querries.GetBasketProducts;
+using ETaraba.Application.Baskets.Querries.GetBasketsProducts;
 using ETaraba.DTOs.BasketProductDTOs;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -23,9 +23,9 @@ namespace ETaraba.Controllers
         }
         [HttpGet]
         [Route("basketproducts")]
-        public async Task<IActionResult> GetBasketProducts()
+        public async Task<IActionResult> GetBasketsProducts()
         {
-            var result = await _mediator.Send(new GetBasketProductsQuery());
+            var result = await _mediator.Send(new GetBasketsProductsQuery());
             var mappedResult = _mapper.Map<IEnumerable<BasketProductDTO>>(result);
             return Ok(mappedResult);
 
