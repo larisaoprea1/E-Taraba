@@ -1,6 +1,12 @@
 ﻿using AutoMapper;
 using ETaraba.Application.IRepositories;
+using ETaraba.Application.Orders.Commands.CreateOrder;
+using ETaraba.Domain.Models;
+using ETaraba.DTOs.OrderDTOs;
+using ETaraba.DTOs.ProductDTOs;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace ETaraba.Controllers
 {
@@ -9,15 +15,34 @@ namespace ETaraba.Controllers
     public class OrderController : ControllerBase
     {
         private readonly IMapper _mapper;
-        private readonly IBasketProductRepository _basketProductRepository;
-        private readonly IOrderRepository _orderRepository;
+        private readonly IMediator _mediator;
         public OrderController(IMapper mapper,
-           IBasketProductRepository basketProductRepository,
-           IOrderRepository orderRepository)
+            IMediator mediator
+           )
         {
-            _orderRepository = orderRepository ?? throw new ArgumentNullException(nameof(orderRepository));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-            _basketProductRepository = basketProductRepository ?? throw new ArgumentNullException(nameof(basketProductRepository));
+            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+        }
+        [HttpPost]
+        public async Task<IActionResult> CreateOrder(Guid Id, OrderForCreateDTO orderForCreateDTO)
+        {
+            var order = new Order
+            {
+                FirstName = orderForCreateDTO.FirstName,
+                LastName = orderForCreateDTO.LastName,  
+                PhoneNumber = orderForCreateDTO.PhoneNumber,
+                Address = orderForCreateDTO.Address,
+                Email = orderForCreateDTO.Email,
+                City = orderForCreateDTO.City,
+                Country = orderForCreateDTO.Country,
+            };
+            var result =await _mediator.Send(new CreateOrderCommand
+            {
+                UserId = Id,
+                Order = order
+            });
+            var orderCreated = _mapper.Map<OrderDTO>(result);
+            return Ok(orderCreated);
         }
        
     }
