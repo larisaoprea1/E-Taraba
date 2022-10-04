@@ -18,6 +18,8 @@ namespace ETaraba.Infrastructure.Repositories
                 .Include(u => u.Basket)
                 .ThenInclude(u => u.BasketProducts)
                 .ThenInclude(u=>u.Product)
+                .Include(u=> u.Orders)
+                .ThenInclude(u => u.OrderProducts)
                 .Where(u => u.Id == userId)
                 .FirstOrDefaultAsync();
         }
@@ -27,6 +29,8 @@ namespace ETaraba.Infrastructure.Repositories
                 .Include(u => u.Basket)
                 .ThenInclude(u => u.BasketProducts)
                 .ThenInclude(u=> u.Product)
+                .Include(u => u.Orders)
+                .ThenInclude(u => u.OrderProducts)
                 .ToListAsync();
         }
         public void DeleteUser(User user)

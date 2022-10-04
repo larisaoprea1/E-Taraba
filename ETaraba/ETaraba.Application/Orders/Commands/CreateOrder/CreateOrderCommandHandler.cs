@@ -52,8 +52,8 @@ namespace ETaraba.Application.Orders.Commands.CreateOrder
                 await _orderProductRepository.AddOrderProductAsync(orderProduct);
             }
             order.Total = orderTotal;
+            basket.BasketProducts.Clear();
             await _orderProductRepository.SaveAsync();
-            await _orderRepository.SaveAsync();
             return order;
         }
     }
