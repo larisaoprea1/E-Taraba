@@ -2,5 +2,17 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import 'bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import {
+  faHome,
+  faUser,
+  faUserPlus,
+  faSignInAlt,
+  faSignOutAlt
+} from '@fortawesome/free-solid-svg-icons';
 
-createApp(App).use(store).use(router).mount('#app')
+library.add(faHome, faUser, faUserPlus, faSignInAlt, faSignOutAlt);
+createApp(App).use(store).use(router).component("font-awesome-icon", FontAwesomeIcon).mount('#app')
