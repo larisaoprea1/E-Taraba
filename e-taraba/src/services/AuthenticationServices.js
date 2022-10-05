@@ -22,4 +22,21 @@ export default {
         password: user.password
       });
     },
+    //login
+    loginUser(user){
+      return apiClient.post("/login",{
+        email: user.email,
+        password: user.password
+      })
+      .then(res => {
+        if(res.data.accessToken){
+          localStorage.setItem('user', JSON.stringify(res.data));
+        }
+        return res.data;
+      });
+    },
+    //logout
+    logout() {
+      localStorage.removeItem('user');
+    }
 }
