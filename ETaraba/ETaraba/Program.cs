@@ -63,6 +63,7 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("RequireAdministratorRole",
          policy => policy.RequireRole("Administrator"));
 });
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -79,6 +80,11 @@ app.UseRouting();
 app.UseAuthentication();
 
 app.UseAuthorization();
+app.UseCors(x => x
+    .AllowAnyMethod()
+    .AllowAnyHeader()
+    .SetIsOriginAllowed(origin => true) // allow any origin 
+    .AllowCredentials());
 
 app.MapControllers();
 
