@@ -1,44 +1,44 @@
 <template>
-  <div class="col-md-12">
+    <div class="container">
       <Form @submit="handleRegister" :validation-schema="schema">
         <div v-if="!successful">
-          <div class="form-group">
+       
             <label for="userName">Username</label>
             <Field name="userName" type="text" class="form-control" />
-            <ErrorMessage name="userName" class="error-feedback" />
-          </div>
+            <ErrorMessage name="userName" class="error-feedback color" />
+        
           <div class="form-group">
             <label for="email">Email</label>
             <Field name="email" type="email" class="form-control" />
-            <ErrorMessage name="email" class="error-feedback" />
+            <ErrorMessage name="email" class="error-feedback color" />
           </div>
           <div class="form-group">
             <label for="firstName">First Name</label>
             <Field name="firstName" type="text" class="form-control" />
-            <ErrorMessage name="firstName" class="error-feedback" />
+            <ErrorMessage name="firstName" class="error-feedback color" />
           </div>
           <div class="form-group">
             <label for="lastName">Last Name</label>
             <Field name="lastName" type="text" class="form-control" />
-            <ErrorMessage name="lastName" class="error-feedback" />
+            <ErrorMessage name="lastName" class="error-feedback color" />
           </div>
           <div class="form-group">
             <label for="phoneNumber">Phone Number</label>
             <Field name="phoneNumber" type="tel" class="form-control" />
-            <ErrorMessage name="phoneNumber" class="error-feedback" />
+            <ErrorMessage name="phoneNumber" class="error-feedback color" />
           </div>
           <div class="form-group">
             <label for="profileImageSrc">Profile Image</label>
             <Field name="profileImageSrc" value='https://nationaltoday.com/wp-content/uploads/2020/08/international-cat-day.jpg' type="url" class="form-control" />
-            <ErrorMessage name="profileImageSrc" class="error-feedback" />
+            <ErrorMessage name="profileImageSrc" class="error-feedback color" />
           </div>
           <div class="form-group">
             <label for="password">Password</label>
             <Field name="password" type="password" class="form-control" />
-            <ErrorMessage name="password" class="error-feedback" />
+            <ErrorMessage name="password" class="error-feedback color" />
           </div>
           <div class="form-group">
-            <button class="btn btn-primary btn-block" :disabled="loading">
+            <button class="btn btn-primary btn-block mt-3" :disabled="loading">
               <span
                 v-show="loading"
                 class="spinner-border spinner-border-sm"
@@ -155,5 +155,8 @@ export default {
 };
 </script>
 <style scoped>
-
+.color{
+  color: red;
+  font-weight: bold;
+}
 </style>
