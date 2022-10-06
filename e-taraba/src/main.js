@@ -13,8 +13,9 @@ import {
   faUser,
   faUserPlus,
   faSignInAlt,
-  faSignOutAlt
+  faSignOutAlt,
+  faShoppingBag
 } from '@fortawesome/free-solid-svg-icons';
 
-library.add(faHome, faUser, faUserPlus, faSignInAlt, faSignOutAlt);
+library.add(faHome, faUser, faUserPlus, faSignInAlt, faSignOutAlt,faShoppingBag);
 createApp(App).use(store).use(router).use(ElementPlus).component("font-awesome-icon", FontAwesomeIcon).mount('#app')

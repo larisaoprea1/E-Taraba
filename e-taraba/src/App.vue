@@ -48,4 +48,12 @@ nav a.router-link-exact-active {
     background-position: 0% 50%;
   }
 } */
+@media (max-width: 550px){
+  nav{
+    padding: 20px;
+  }
+  #app{
+    height: 100vh;
+  }
+}
 </style>

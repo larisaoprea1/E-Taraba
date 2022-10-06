@@ -18,7 +18,7 @@ export default {
         firstName: user.firstName,
         lastName: user.lastName,
         phoneNumber:user.phoneNumber,
-        profileImageSrc: "https://nationaltoday.com/wp-content/uploads/2020/08/international-cat-day.jpg",
+        profileImageSrc: user.profileImageSrc,
         password: user.password
       });
     },
@@ -28,15 +28,16 @@ export default {
         email: user.email,
         password: user.password
       })
-      .then(res => {
-        if(res.data.accessToken){
-          localStorage.setItem('user', JSON.stringify(res.data));
+      .then(response => {
+        if (response.data.token) {
+          localStorage.setItem('user', JSON.stringify(response.data));
         }
-        return res.data;
+
+        return response.data;
       });
     },
     //logout
     logout() {
-      localStorage.removeItem('user');
+      localStorage.clear();
     }
 }
