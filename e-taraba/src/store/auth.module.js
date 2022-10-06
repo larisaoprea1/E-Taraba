@@ -44,7 +44,7 @@ export const auth = {
     login({ commit }, user) {
       return AuthenticationServices.loginUser(user)
         .then((user) => {
-          commit("loginSuccess");
+          commit("loginSuccess", user);
           return Promise.resolve(user);
         })
         .catch((err) => {

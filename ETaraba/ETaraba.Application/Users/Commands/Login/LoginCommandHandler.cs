@@ -45,12 +45,14 @@ namespace ETaraba.Application.Users.Commands.Login
                     claims: claimsForToken,
                     signingCredentials: new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256)
                  );
+                var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+                var userToken = new JwtSecurityTokenHandler().ReadToken(tokenString) as JwtSecurityToken;
                 return new
                 {
                     token = new JwtSecurityTokenHandler().WriteToken(token),
+                    user = userToken.Payload,
                     expiration = token.ValidTo
                 };
-
             }
             return "401";
 
