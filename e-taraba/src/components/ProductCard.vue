@@ -1,6 +1,6 @@
 <template>
-  <router-link class="__link" :to="{ name: 'home', params: { id: product.id } }">
-    <div class="card card_style mt-2" style="width: 18rem">
+  <router-link class="__link col-lg-3 col-md-6 col-xs-12 ml-xs-2" :to="{ name: 'home', params: { id: product.id } }">
+    <div class="card card_style mt-2 " style="width: 16rem">
       <img :src="product.productPhoto" class="card-img-top" :alt="product.name" />
       <div class="card-body">
         <hr/>
@@ -43,4 +43,5 @@ export default {
 .__bold{
     font-weight: bold;
 }
+
 </style>

@@ -1,12 +1,14 @@
 <template>
   <h1>Hello</h1>
-  <div class="products_card">
+  <div class="container">
+    <div class="row">
     <ProductCard
       v-for="product in products"
       :key="product.id"
       :product="product"
     />
   </div>
+</div>
 </template>
 
 <script>
@@ -30,9 +32,5 @@ export default {
 </script>
 
 <style>
-.products_card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+
 </style>
