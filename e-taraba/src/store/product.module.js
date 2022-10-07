@@ -12,19 +12,36 @@ export const product = {
     GET_PRODUCTS(state, products) {
       state.products = products;
     },
+    GET_PRODUCT(state, product){
+      state.product = product;
+    }
   },
   actions: {
-    fetchProducts({ commit }) {
-      return ProductServices.getProducts()
+    async fetchProducts({ commit }) {
+      return await ProductServices.getProducts()
         .then((res) => {
           commit("GET_PRODUCTS", res.data);
         })
         .then((res) => {
           console.log(res);
         })
-        .catch((err) => { 
+        .catch((err) => {
           throw err;
         });
+    },
+    fetchProduct({ commit, state }, id) {
+      const existingProduct = state.products.find((product) => product.id == id);
+      if (existingProduct) {
+        commit("GET_PRODUCT", existingProduct);
+      } else {
+        return ProductServices.getProduct(id)
+          .then((res) => {
+            commit("GET_PRODUCT", res.data);
+          })
+          .catch((err) => {
+            throw err;
+          });
+      }
     },
   },
 };

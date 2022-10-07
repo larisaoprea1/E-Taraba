@@ -1,5 +1,5 @@
 <template>
-  <router-link class="__link col-lg-3 col-md-6 col-xs-12 ml-xs-2" :to="{ name: 'home', params: { id: product.id } }">
+  <router-link class="d-flex justify-content-center __link col-lg-3 col-md-6 col-sm-6 col-12 mt-3" :to="{ name: 'ProductPage', params: { id: product.id } }">
     <div class="card card_style mt-2 " style="width: 16rem">
       <img :src="product.productPhoto" class="card-img-top" :alt="product.name" />
       <div class="card-body">
@@ -30,9 +30,6 @@ export default {
 {
     border: 2px solid #2d694f;
 }
-.card_style img{
-
-}
 .card_style:hover{
     box-shadow: 0 0 5pt 2pt #2d694f;
 }
@@ -43,5 +40,4 @@ export default {
 .__bold{
     font-weight: bold;
 }
-
 </style>

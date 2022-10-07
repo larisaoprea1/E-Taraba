@@ -2,6 +2,7 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import RegisterPage from '../views/RegisterPage.vue'
 import LoginPage from '../views/LoginPage.vue'
+import ProductPage from '../views/ProductPage.vue'
 
 const routes = [
   {
@@ -26,6 +27,12 @@ const routes = [
     path: '/login',
     name: 'login',
     component: LoginPage
+  },
+  {
+    path: '/product/:id',
+    name: 'ProductPage',
+    props: true,
+    component: ProductPage
   },
 ]
 

@@ -1,5 +1,5 @@
 <template>
-  <h1>Hello</h1>
+  <ImageSlider/>
   <div class="container">
     <div class="row">
     <ProductCard
@@ -13,12 +13,14 @@
 
 <script>
 import ProductCard from "../components/ProductCard.vue";
+import ImageSlider from "../components/ImageSlider.vue";
 
 export default {
   name: "HomeView",
   components: {
     ProductCard,
-  },
+    ImageSlider,
+},
   created() {
     this.$store.dispatch("product/fetchProducts");
   },
