@@ -6,7 +6,7 @@
     text-color="#fff"
     margin-left="10px"
     background-color="#2d694f"
-    active-text-color="#42b983"
+    active-text-color= "none"
     
   >
     <div class="flex-grow1" />
