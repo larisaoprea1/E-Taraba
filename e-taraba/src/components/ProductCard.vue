@@ -6,9 +6,9 @@
         <hr/>
         <h5 class="card-title">{{product.name}}</h5>
         <p class="card-text __bold">
-          {{product.price}}$
+          {{product.price}} lei
         </p>
-        <a href="#" class="btn btn-dark">Add to Cart</a>
+        <a class="btn btn-dark">Add to Cart</a>
       </div>
     </div>
   </router-link>

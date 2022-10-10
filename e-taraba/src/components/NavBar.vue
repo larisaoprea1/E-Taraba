@@ -34,12 +34,17 @@
         >Login</router-link
       ></el-menu-item
     >
-    <el-menu-item index="5" v-if="currentUser"
-      ><router-link :to="{ name: 'home' }" class="nav-link"
-        >Hello, {{currentUser.user.UserName}}!</router-link
+    <el-menu-item index="5" 
+      ><router-link :to="{ name: 'home' }" class="nav-link d-flex align-items-center gap-2"
+        ><font-awesome-icon icon="fa-solid fa-cart-shopping " /> Cart </router-link
       ></el-menu-item
     >
     <el-menu-item index="6" v-if="currentUser"
+      ><router-link :to="{ name: 'home' }" class="nav-link d-flex align-items-center gap-2"
+        ><font-awesome-icon icon="fa-user" />Hello, {{currentUser.user.UserName}}!</router-link
+      ></el-menu-item
+    >
+    <el-menu-item index="7" v-if="currentUser"
       ><a
         class="nav-link d-flex align-items-center gap-2"
         @click.prevent="logOut"

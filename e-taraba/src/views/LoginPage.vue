@@ -132,7 +132,7 @@ export default {
   -moz-text-fill-color: transparent;
 }
 .line__ {
-  border-color: #133627;
+  border-color: #126b44;
 }
 @media (max-width: 850px){
     .form_container{
