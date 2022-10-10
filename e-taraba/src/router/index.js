@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import RegisterPage from '../views/RegisterPage.vue'
 import LoginPage from '../views/LoginPage.vue'
 import ProductPage from '../views/ProductPage.vue'
+import ProfilePage from '../views/ProfilePage.vue'
 
 const routes = [
   {
@@ -27,6 +28,11 @@ const routes = [
     path: '/login',
     name: 'login',
     component: LoginPage
+  },
+  {
+    path: '/profile',
+    name: 'profile',
+    component: ProfilePage
   },
   {
     path: '/product/:id',

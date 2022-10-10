@@ -22,9 +22,6 @@ export const product = {
         .then((res) => {
           commit("GET_PRODUCTS", res.data);
         })
-        .then((res) => {
-          console.log(res);
-        })
         .catch((err) => {
           throw err;
         });

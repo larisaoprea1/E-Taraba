@@ -32,6 +32,8 @@ namespace ETaraba.Application.Users.Commands.Login
                 {
                     new Claim("Id", userExists.Id.ToString()),
                     new Claim("UserName", userExists.UserName),
+                    new Claim("FirstName", userExists.FirstName),
+                    new Claim("LastName", userExists.LastName),
                     new Claim("Email", userExists.Email),
                     new Claim("ProfileImage", userExists.ProfileImgSrc),
                     new Claim("IsLoggedIn", true.ToString(), ClaimValueTypes.Boolean),
@@ -41,7 +43,7 @@ namespace ETaraba.Application.Users.Commands.Login
                 var token = new JwtSecurityToken(
                     issuer: _configuration["Authentication:Issuer"],
                     audience: _configuration["Authentication:Audience"],
-                    expires: DateTime.Now.AddHours(1),
+                    expires: DateTime.Now.AddMinutes(30),
                     claims: claimsForToken,
                     signingCredentials: new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256)
                  );

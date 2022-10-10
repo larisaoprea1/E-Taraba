@@ -31,6 +31,7 @@ namespace ETaraba.Controllers
 
         }
         [HttpPost]
+        [Route("user/{userId}/product/{productId}/count/{count}")]
         public async Task<IActionResult> AddProductToBasket(Guid userId, Guid productId, int count)
         {
             await _mediator.Send(new AddProductToBasketCommand

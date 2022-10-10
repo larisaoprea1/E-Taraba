@@ -5,9 +5,11 @@
         <img :src="product.productPhoto" />
       </div>
       <div class="product_container">
-        <h5 class="title">{{ product.name }}</h5>
-        <p class="__price">{{ product.price }} lei</p>
         <div>
+          <h5 class="title">{{ product.name }}</h5>
+          <p class="__price">{{ product.price }} lei</p>
+        </div>
+        <div class="__addtocart">
           <input
             class="_input"
             type="number"
@@ -30,9 +32,9 @@
           >
         </div>
         <div class="_icon">
-          <font-awesome-icon icon="fa-credit-card" /> PLATA RAMBURS
-          <font-awesome-icon icon="fa-truck" />LIVRARE & RETUR GRATUITE
-          <font-awesome-icon icon="fa-calendar" /> 100 DE ZILE DREPT DE RETUR
+          <div><font-awesome-icon icon="fa-credit-card" /> PLATA RAMBURS</div>
+          <div><font-awesome-icon icon="fa-truck" />LIVRARE & RETUR GRATUITE</div>
+          <div><font-awesome-icon icon="fa-calendar" /> 100 DE ZILE DREPT DE RETUR</div>
         </div>
       </div>
     </div>
@@ -54,6 +56,7 @@ export default {
   },
   computed: {
     product() {
+      console.log(this.$store.state.product.product);
       return this.$store.state.product.product;
     },
   },
@@ -66,13 +69,17 @@ export default {
 }
 .image_container {
   width: 550px;
+  padding: 10px;
+  /* box-shadow: rgba(185, 185, 185, 0.48) 6px 2px 16px 0px, rgba(255, 255, 255, 0.8) -6px -2px 16px 0px; */
+  /* box-shadow: rgba(0, 0, 0, 0.15) 2.4px 2.4px 3.2px; */
+  box-shadow: rgba(28, 107, 74, 0.45) 0px 25px 20px -20px;
 }
 .image_container img {
   width: 100%;
 }
 .__price {
   color: #35a373;
-  font-size: large;
+  font-size: x-large;
   font-weight: bolder;
 }
 .product_details {
@@ -83,17 +90,16 @@ export default {
   margin-bottom: 0;
 }
 .__col {
-  margin-top: 100px;
+  margin-top: 50px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
 }
 .product_container {
-  width: 400px;
-  margin-top: 50px;
+  width: 600px;
   margin-bottom: 50px;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   flex-direction: column;
 }
 input[type="number"] {
@@ -102,5 +108,9 @@ input[type="number"] {
 ._icon{
   display: flex;
   flex-direction: column;
+  color:gray;
+}
+.__addtocart{
+  margin-top: 150px;
 }
 </style>

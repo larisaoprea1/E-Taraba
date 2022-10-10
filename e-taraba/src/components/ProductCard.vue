@@ -8,7 +8,6 @@
         <p class="card-text __bold">
           {{product.price}} lei
         </p>
-        <a class="btn btn-dark">Add to Cart</a>
       </div>
     </div>
   </router-link>
@@ -26,12 +25,9 @@ export default {
 </script>
 
 <style scoped>
-.card_style
-{
-    border: 2px solid #2d694f;
-}
 .card_style:hover{
-    box-shadow: 0 0 5pt 2pt #2d694f;
+    box-shadow: rgba(54, 117, 93, 0.45) 0px 25px 20px -20px;
+    
 }
 .__link{
     text-decoration: none;
