@@ -26,12 +26,12 @@ export const product = {
           throw err;
         });
     },
-    fetchProduct({ commit, state }, id) {
-      const existingProduct = state.products.find((product) => product.id == id);
+    async fetchProduct({ commit, state }, id) {
+      const existingProduct = await state.products.find((product) => product.id == id);
       if (existingProduct) {
         commit("GET_PRODUCT", existingProduct);
       } else {
-        return ProductServices.getProduct(id)
+        return await ProductServices.getProduct(id)
           .then((res) => {
             commit("GET_PRODUCT", res.data);
           })

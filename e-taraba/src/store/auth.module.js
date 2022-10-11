@@ -30,8 +30,8 @@ export const auth = {
     },
   },
   actions: {
-    register({ commit }, user) {
-      return AuthenticationServices.registerUser(user)
+    async register({ commit }, user) {
+      return await AuthenticationServices.registerUser(user)
         .then((res) => {
           commit("registerSuccess");
           return Promise.resolve(res.data);
@@ -41,8 +41,8 @@ export const auth = {
           return Promise.reject(err);
         });
     },
-    login({ commit }, user) {
-      return AuthenticationServices.loginUser(user)
+    async login({ commit }, user) {
+      return await AuthenticationServices.loginUser(user)
         .then((user) => {
           commit("loginSuccess", user);
           return Promise.resolve(user);

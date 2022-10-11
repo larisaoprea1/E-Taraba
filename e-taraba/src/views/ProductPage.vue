@@ -17,6 +17,7 @@
             min="1"
             step="1"
             placeholder="1"
+            v-model="count"
           />
           <datalist id="quantities">
             <option value="1" />
@@ -26,15 +27,19 @@
             <option value="5" />
           </datalist>
           <br />
-          <a class="btn btn-dark mt-2"
+          <a @click.prevent="handleAddToCart" class="btn btn-dark mt-2"
             ><font-awesome-icon icon="fa-solid fa-cart-shopping" />Add to
             Cart</a
           >
         </div>
         <div class="_icon">
           <div><font-awesome-icon icon="fa-credit-card" /> PLATA RAMBURS</div>
-          <div><font-awesome-icon icon="fa-truck" />LIVRARE & RETUR GRATUITE</div>
-          <div><font-awesome-icon icon="fa-calendar" /> 100 DE ZILE DREPT DE RETUR</div>
+          <div>
+            <font-awesome-icon icon="fa-truck" />LIVRARE & RETUR GRATUITE
+          </div>
+          <div>
+            <font-awesome-icon icon="fa-calendar" /> 100 DE ZILE DREPT DE RETUR
+          </div>
         </div>
       </div>
     </div>
@@ -51,6 +56,11 @@
 <script>
 export default {
   props: ["id"],
+  data(){
+    return{
+      count: ''
+    }
+  },
   created() {
     this.$store.dispatch("product/fetchProduct", this.id);
   },
@@ -59,6 +69,16 @@ export default {
       console.log(this.$store.state.product.product);
       return this.$store.state.product.product;
     },
+    currentUser() {
+      return this.$store.state.auth.user;
+    },
+  },
+  methods:{
+      handleAddToCart(){
+          this.$store.dispatch("basket/addProductToCartEvent",{
+            userid: this.$store.state.auth.user.id,
+            productid: this.$store.state.product.product.id})
+      }
   },
 };
 </script>
@@ -70,8 +90,6 @@ export default {
 .image_container {
   width: 550px;
   padding: 10px;
-  /* box-shadow: rgba(185, 185, 185, 0.48) 6px 2px 16px 0px, rgba(255, 255, 255, 0.8) -6px -2px 16px 0px; */
-  /* box-shadow: rgba(0, 0, 0, 0.15) 2.4px 2.4px 3.2px; */
   box-shadow: rgba(28, 107, 74, 0.45) 0px 25px 20px -20px;
 }
 .image_container img {
@@ -105,12 +123,12 @@ export default {
 input[type="number"] {
   width: 50px;
 }
-._icon{
+._icon {
   display: flex;
   flex-direction: column;
-  color:gray;
+  color: gray;
 }
-.__addtocart{
+.__addtocart {
   margin-top: 150px;
 }
 </style>
