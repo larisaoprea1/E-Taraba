@@ -7,6 +7,7 @@
       <div class="product_container">
         <div>
           <h5 class="title">{{ product.name }}</h5>
+          <h6>{{currentUser.Name}}</h6>
           <p class="__price">{{ product.price }} lei</p>
         </div>
         <div class="__addtocart">
@@ -48,6 +49,7 @@
 
       <div>
         <h6 class="__margin">{{ product.description }}</h6>
+      
       </div>
     </div>
   </div>
@@ -76,8 +78,8 @@ export default {
   methods:{
       handleAddToCart(){
           this.$store.dispatch("basket/addProductToCartEvent",{
-            userid: this.$store.state.auth.user.id,
-            productid: this.$store.state.product.product.id})
+            userid: this.currentUser.user.Id,
+            productid: this.product.id})
       }
   },
 };

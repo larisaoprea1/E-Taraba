@@ -37,7 +37,8 @@ namespace ETaraba.Application.Users.Commands.Login
                     new Claim("Email", userExists.Email),
                     new Claim("ProfileImage", userExists.ProfileImgSrc),
                     new Claim("IsLoggedIn", true.ToString(), ClaimValueTypes.Boolean),
-                    new Claim(ClaimTypes.NameIdentifier,userExists.UserName)
+                    new Claim(ClaimTypes.NameIdentifier,userExists.UserName),
+                    new Claim("BasketId", userExists.BasketId.ToString())
                 };
                 var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Authentication:Token"]));
                 var token = new JwtSecurityToken(
