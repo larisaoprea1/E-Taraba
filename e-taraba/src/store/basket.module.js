@@ -17,7 +17,7 @@ export const basket = {
     async addProductToCartEvent(state, { userid, productid, count }) {
       return await BasketService.addProductToCart(userid, productid, count);
     },
-    async getBasket({ commit }, id) {
+    async fetchBasket({commit}, {id}) {
       return await BasketService.getBasket(id)
         .then((res) => {
           commit("GET_BASKET", res.data);
