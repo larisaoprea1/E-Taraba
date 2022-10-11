@@ -7,7 +7,7 @@
       <div class="product_container">
         <div>
           <h5 class="title">{{ product.name }}</h5>
-          <h6>{{currentUser.Name}}</h6>
+          <h6>{{ currentUser.Name }}</h6>
           <p class="__price">{{ product.price }} lei</p>
         </div>
         <div class="__addtocart">
@@ -49,7 +49,6 @@
 
       <div>
         <h6 class="__margin">{{ product.description }}</h6>
-      
       </div>
     </div>
   </div>
@@ -58,10 +57,10 @@
 <script>
 export default {
   props: ["id"],
-  data(){
-    return{
-      count: ''
-    }
+  data() {
+    return {
+      count: "",
+    };
   },
   created() {
     this.$store.dispatch("product/fetchProduct", this.id);
@@ -75,12 +74,14 @@ export default {
       return this.$store.state.auth.user;
     },
   },
-  methods:{
-      handleAddToCart(){
-          this.$store.dispatch("basket/addProductToCartEvent",{
-            userid: this.currentUser.user.Id,
-            productid: this.product.id})
-      }
+  methods: {
+    handleAddToCart() {
+      this.$store.dispatch("basket/addProductToCartEvent", {
+        userid: this.currentUser.user.Id,
+        productid: this.product.id,
+        count: this.count
+      });
+    },
   },
 };
 </script>

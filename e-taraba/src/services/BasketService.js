@@ -10,6 +10,9 @@ const apiClient = axios.create({
 });
 
 export default {
+    getBasket(id){
+      return apiClient.get(`/${id}`)
+    },
     addProductToCart(userid,productid,count){
         return apiClient.post(`/user/${userid}/product/${productid}/count/${count}`)
     }
