@@ -6,8 +6,7 @@
     text-color="#fff"
     margin-left="10px"
     background-color="#2d694f"
-    active-text-color= "none"
-    
+    active-text-color="none"
   >
     <div class="flex-grow1" />
     <el-menu-item index="1"
@@ -24,11 +23,13 @@
       ></el-menu-item
     >
     <div class="flex-grow" />
-    
-    <el-menu-item index="5" 
-      ><router-link :to="{ name: 'home' }" class="nav-link d-flex align-items-center gap-2"
-        ><font-awesome-icon icon="fa-solid fa-cart-shopping " /> Cart </router-link
-      ></el-menu-item
+
+    <el-menu-item index="5"
+      ><router-link
+        :to="{ name: 'CartPage'}"
+        class="nav-link d-flex align-items-center gap-2"
+        ><font-awesome-icon icon="fa-solid fa-cart-shopping " /> Cart
+      </router-link></el-menu-item
     >
     <el-menu-item index="3" v-if="!currentUser"
       ><router-link :to="{ name: 'register' }" class="nav-link"
@@ -41,8 +42,11 @@
       ></el-menu-item
     >
     <el-menu-item index="6" v-if="currentUser"
-      ><router-link :to="{ name: 'profile' }" class="nav-link d-flex align-items-center gap-2"
-        ><font-awesome-icon icon="fa-user" />Hello, {{currentUser.user.UserName}}!</router-link
+      ><router-link
+        :to="{ name: 'profile' }"
+        class="nav-link d-flex align-items-center gap-2"
+        ><font-awesome-icon icon="fa-user" />Hello,
+        {{ currentUser.user.UserName }}!</router-link
       ></el-menu-item
     >
     <el-menu-item index="7" v-if="currentUser"
@@ -57,6 +61,7 @@
 </template>
 
 <script>
+
 export default {
   name: "NavBar",
   computed: {
@@ -75,7 +80,7 @@ export default {
 
 <style scoped>
 .color {
-  font-size:x-large;
+  font-size: x-large;
   font-weight: bolder;
 }
 .flex-grow1 {

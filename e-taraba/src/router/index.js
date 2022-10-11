@@ -4,6 +4,7 @@ import RegisterPage from '../views/RegisterPage.vue'
 import LoginPage from '../views/LoginPage.vue'
 import ProductPage from '../views/ProductPage.vue'
 import ProfilePage from '../views/ProfilePage.vue'
+import CartPage from '../views/CartPage.vue'
 
 const routes = [
   {
@@ -39,6 +40,11 @@ const routes = [
     name: 'ProductPage',
     props: true,
     component: ProductPage
+  },
+  {
+    path: '/basket',
+    name: 'CartPage',
+    component: CartPage
   },
 ]
 
