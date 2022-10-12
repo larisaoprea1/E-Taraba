@@ -26,5 +26,8 @@ export const basket = {
           console.log(err);
         });
     },
+    async removeBasketProductEvent(id){
+      return await BasketService.removeBasketProduct(id);
+    }
   },
 };

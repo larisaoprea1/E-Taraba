@@ -15,5 +15,8 @@ export default {
     },
     addProductToCart(userid,productid,count){
         return apiClient.post(`/user/${userid}/product/${productid}/count/${count}`)
+    },
+    removeBasketProduct(id){
+      return apiClient.delete(`/${id}`)
     }
 }
