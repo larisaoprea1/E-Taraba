@@ -26,6 +26,7 @@ export default {
   },
   computed: {
     products() {
+      console.log(this.$store.state.product)
       return this.$store.state.product.products;
     },
   },
