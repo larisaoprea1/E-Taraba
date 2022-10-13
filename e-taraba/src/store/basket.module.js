@@ -12,12 +12,18 @@ export const basket = {
     GET_BASKET(state, basket) {
       state.basket = basket;
     },
+    DELETE_BASKET_PRODUCT(state, basketProduct) {
+      var index = state.basketProducts.indexOf(
+        basketProduct
+      );
+      state.basketProducts.splice(index, 1);
+    },
   },
   actions: {
     async addProductToCartEvent(state, { userid, productid, count }) {
       return await BasketService.addProductToCart(userid, productid, count);
     },
-    async fetchBasket({commit}, id) {
+    async fetchBasket({ commit }, id) {
       return await BasketService.getBasket(id)
         .then((res) => {
           commit("GET_BASKET", res.data);
@@ -26,8 +32,11 @@ export const basket = {
           console.log(err);
         });
     },
-    async removeBasketProductEvent(id){
-      return await BasketService.removeBasketProduct(id);
-    }
+    async removeBasketProductEvent({ commit }, id) {
+      return await BasketService.removeBasketProduct(id).then(() => {
+        commit("DELETE_BASKET_PRODUCT", id);
+        location.reload();
+      });
+    },
   },
 };

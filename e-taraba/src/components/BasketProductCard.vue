@@ -49,7 +49,7 @@ export default {
   },
   methods:{
     handleRemoveBasketProduct(){
-        this.$store.dispatch("basket/removeBasketProductEvent", this.basketProduct.id)
+        this.$store.dispatch("basket/removeBasketProductEvent", this.basketProduct.id);
     }
   },
 };
