@@ -45,8 +45,8 @@
       ><router-link
         :to="{ name: 'profile' }"
         class="nav-link d-flex align-items-center gap-2"
-        ><font-awesome-icon icon="fa-user" />Hello,
-        {{ currentUser.user.UserName }}!</router-link
+        >Hello,
+        {{ currentUser.user.UserName }}!<el-avatar :size="40" :src="currentUser.user.ProfileImage" /></router-link
       ></el-menu-item
     >
     <el-menu-item index="7" v-if="currentUser"
