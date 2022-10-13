@@ -29,17 +29,28 @@
           <p>x{{ basketProduct.quantity }}</p>
         </div>
         <div>
-          <a @click="handleRemoveBasketProduct" class="btn btn-dark">Remove</a>
+          <el-button
+            @click="handleRemoveBasketProduct"
+            :disabled="loading"
+            color="black"
+            plain
+            ><span
+              v-show="loading"
+              class="spinner-border spinner-border-sm"
+            ></span
+            ><span><font-awesome-icon icon="fa-trash-can"/>Remove</span></el-button
+          >
         </div>
       </div>
     </div>
     <div class="_price_container">
-      <p>{{ basketProduct.price }}</p>
+      <p>{{ basketProduct.price }} lei</p>
     </div>
   </div>
 </template>
 
 <script>
+import { useToast } from "vue-toastification";
 export default {
   props: {
     basketProduct: {
@@ -47,10 +58,24 @@ export default {
       required: true,
     },
   },
-  methods:{
-    handleRemoveBasketProduct(){
-        this.$store.dispatch("basket/removeBasketProductEvent", this.basketProduct.id);
-    }
+  data() {
+    return {
+      loading: false,
+    };
+  },
+  setup() {
+    const toast = useToast();
+    return { toast };
+  },
+  methods: {
+    handleRemoveBasketProduct() {
+      this.loading = true;
+      this.$store.dispatch(
+        "basket/removeBasketProductEvent",
+        this.basketProduct.id
+      );
+      this.toast.success("The item was removed!");
+    },
   },
 };
 </script>
@@ -66,6 +91,8 @@ export default {
 }
 ._container {
   width: 500px;
+  margin-left: 10px;
+  margin-bottom: 10px;
 }
 ._information_container {
   flex-direction: column;
@@ -76,4 +103,5 @@ export default {
   text-decoration: none;
   color: black;
 }
+
 </style>

@@ -5,6 +5,7 @@ import LoginPage from '../views/LoginPage.vue'
 import ProductPage from '../views/ProductPage.vue'
 import ProfilePage from '../views/ProfilePage.vue'
 import CartPage from '../views/CartPage.vue'
+import OrderPage from '../views/OrderPage.vue'
 
 const routes = [
   {
@@ -45,6 +46,11 @@ const routes = [
     path: '/basket',
     name: 'CartPage',
     component: CartPage
+  },
+  {
+    path: '/order',
+    name: 'OrderPage',
+    component: OrderPage
   },
 ]
 

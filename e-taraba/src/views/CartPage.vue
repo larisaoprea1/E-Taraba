@@ -11,7 +11,7 @@
     <div class="mt-5 _order_container">
       <p>Livrare gratuita: <span>0,00 lei</span></p>
       <p>Total:</p>
-      <a class="btn btn-dark">Order now</a>
+      <a class="btn btn-dark _button">Order now</a>
     </div>
   </div>
 </template>
@@ -51,7 +51,10 @@ export default {
   margin-left: 100px;
 }
 ._order_container{
-  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   width: 400px;
   height: 200px;
   border: 1px solid rgb(204, 204, 204);
@@ -62,5 +65,9 @@ export default {
 }
 ._container{
   justify-content: space-between;
+}
+._button{
+  width: 30%;
+
 }
 </style>

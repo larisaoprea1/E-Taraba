@@ -5,17 +5,30 @@
       <hr class="line__" />
       <div class="form-group">
         <label for="email" class="lable_class">Email:</label>
-        <Field name="email" type="text" placeholder="Email" class="form-control field_class" />
+        <Field
+          name="email"
+          type="text"
+          placeholder="Email"
+          class="form-control field_class"
+        />
         <ErrorMessage name="email" class="error-feedback color" />
       </div>
       <div class="form-group mt-2">
         <label for="password" class="lable_class">Password:</label>
-        <Field name="password" type="password" placeholder="Password" class="form-control field_class" />
+        <Field
+          name="password"
+          type="password"
+          placeholder="Password"
+          class="form-control field_class"
+        />
         <ErrorMessage name="password" class="error-feedback color" />
       </div>
 
       <div class="form-group">
-        <button class="btn btn-dark rounded-pill btn-block mt-2 p-2" :disabled="loading">
+        <button
+          class="btn btn-dark rounded-pill btn-block mt-2 p-2"
+          :disabled="loading"
+        >
           <span
             v-show="loading"
             class="spinner-border spinner-border-sm"
@@ -134,10 +147,10 @@ export default {
 .line__ {
   border-color: #126b44;
 }
-@media (max-width: 850px){
-    .form_container{
-        margin-top: 150px;
-    }
+@media (max-width: 850px) {
+  .form_container {
+    margin-top: 150px;
+  }
 }
 @media (max-width: 550px) {
   .form_container {
@@ -155,22 +168,21 @@ export default {
     font-size: large;
   }
 
-  .container .loginnow{
+  .container .loginnow {
     padding: 0;
     margin: 0;
     font-size: small;
   }
-  .container p{
+  .container p {
     margin: 0;
   }
-  .field_class{
+  .field_class {
     max-width: 250px;
   }
-  
 }
-@media (max-width: 375px){
+@media (max-width: 375px) {
   .form_container {
-  margin-top: 100px;
+    margin-top: 100px;
   }
 }
 </style>

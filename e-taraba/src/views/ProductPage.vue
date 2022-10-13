@@ -55,12 +55,17 @@
 </template>
 
 <script>
+import { useToast } from "vue-toastification";
 export default {
   props: ["id"],
   data() {
     return {
       count: "",
     };
+  },
+  setup() {
+    const toast = useToast();
+    return { toast };
   },
   created() {
     this.$store.dispatch("product/fetchProduct", this.id);
@@ -79,8 +84,9 @@ export default {
       this.$store.dispatch("basket/addProductToCartEvent", {
         userid: this.currentUser.user.Id,
         productid: this.product.id,
-        count: this.count
+        count: this.count,
       });
+      this.toast.success("Item added to the cart!");
     },
   },
 };
