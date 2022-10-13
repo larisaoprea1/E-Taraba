@@ -11,7 +11,9 @@
     <div class="mt-5 _order_container">
       <p>Livrare gratuita: <span>0,00 lei</span></p>
       <p>Total:</p>
-      <a class="btn btn-dark _button">Order now</a>
+      <a class="btn btn-dark _button"><router-link :to="{ name: 'OrderPage' }" class="nav-link"
+        >Order now</router-link
+      ></a>
     </div>
   </div>
 </template>
