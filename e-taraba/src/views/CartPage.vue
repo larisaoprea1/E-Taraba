@@ -1,21 +1,24 @@
 <template>
   <h3 class="_title">Cart</h3>
   <div class="d-flex _container">
-    <div class="_basket_container">
+      <div class="row _row_gap">
+    <div class="_basket_container col-12 col-md-8">
       <BasketProductCard
         v-for="basketProduct in basket"
         :key="basketProduct.id"
         :basketProduct="basketProduct"
       />
     </div>
-    <div class="mt-5 _order_container">
+    <div class="mt-5 _order_container col-12 col-md-4">
       <p>Livrare gratuita: <span>0,00 lei</span></p>
       <p>Total:</p>
-      <a class="btn btn-dark _button"><router-link :to="{ name: 'OrderPage' }" class="nav-link"
+      <el-button color="black"><router-link :to="{ name: 'OrderPage' }" class="nav-link"
         >Order now</router-link
-      ></a>
+      ></el-button>
     </div>
   </div>
+  </div>
+
 </template>
 <script>
 import BasketProductCard from "@/components/BasketProductCard.vue";
@@ -39,7 +42,6 @@ export default {
 </script>
 <style scoped>
 ._basket_container {
-  margin-left: 100px;
   margin-top: 20px;
   border: 1px solid rgb(204, 204, 204);
   flex-direction: column;
@@ -50,7 +52,9 @@ export default {
 ._title {
   margin-top: 20px;
   display: flex;
-  margin-left: 100px;
+justify-content: center;
+  font-weight: bolder;
+  font-size: xx-large;
 }
 ._order_container{
   display: flex;
@@ -63,13 +67,14 @@ export default {
   border-radius: 5px;
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
     rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
-    margin-right: 300px;
 }
 ._container{
-  justify-content: space-between;
+  justify-content: space-around;
 }
 ._button{
   width: 30%;
-
+}
+._row_gap{
+  justify-content: space-between;
 }
 </style>

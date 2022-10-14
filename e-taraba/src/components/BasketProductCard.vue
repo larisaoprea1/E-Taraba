@@ -1,5 +1,6 @@
 <template>
   <div class="d-flex mt-4">
+    
     <div class="d-flex _container">
       <div class="_img_container ml-4">
         <router-link
@@ -86,14 +87,6 @@ export default {
 ._img_container img {
   width: 100%;
 }
-._price_container {
-  width: 300px;
-}
-._container {
-  width: 500px;
-  margin-left: 10px;
-  margin-bottom: 10px;
-}
 ._information_container {
   flex-direction: column;
   justify-content: space-around;
@@ -103,5 +96,8 @@ export default {
   text-decoration: none;
   color: black;
 }
-
+._information_container h6{
+  font-size: large;
+  font-weight: bold;
+}
 </style>
