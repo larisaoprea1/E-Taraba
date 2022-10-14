@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace ETaraba.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/order")]
     [ApiController]
     public class OrderController : ControllerBase
     {
@@ -24,6 +24,7 @@ namespace ETaraba.Controllers
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
         [HttpPost]
+        [Route("saveorder/user/{Id}")]
         public async Task<IActionResult> CreateOrder(Guid Id, OrderForCreateDTO orderForCreateDTO)
         {
             var order = new Order

@@ -20,6 +20,7 @@ export default {
   text-align: center;
   color: #000000;
   height: 100vh;
+  overflow-x: hidden;
 }
 nav {
   padding: 30px;

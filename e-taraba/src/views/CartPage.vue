@@ -10,13 +10,13 @@
         />
       </div>
       <div class="mt-5 _order_container col-md-3 col-12">
-        <p>Livrare gratuita: <span class="_font">0,00 lei</span></p>
+        <p>Livrare gratuita: <span>0,00 lei</span></p>
         <p>Total:</p>
-        <el-button color="black"
+        <a class="btn btn-dark" color="black"
           ><router-link :to="{ name: 'OrderPage' }" class="nav-link"
             >Order now</router-link
-          ></el-button
-        >
+          ></a>
+    
       </div>
     </div>
   </div>
@@ -55,7 +55,7 @@ export default {
 ._title {
   margin-top: 20px;
   display: flex;
-  margin-left: 100px;
+  margin-left: 200px;
 }
 ._order_container {
   display: flex;
@@ -67,6 +67,7 @@ export default {
   border-radius: 5px;
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
     rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+    padding: 20px;
 }
 ._container {
   justify-content: space-around;

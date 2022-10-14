@@ -1,9 +1,9 @@
-<!-- <template>
+<template>
   <div>
     <p>Order Page</p>
     <div class="_container">
-      <el-form
-        @submit="clearFormHandler"
+      <Form
+        @submit.prevent="saveOrderFormHandler"
         ref="clearForm"
         :validation-schema="schema"
         class="_form"
@@ -69,6 +69,8 @@
             />
             <ErrorMessage name="country" class="error-feedback color" />
           </div>
+          Your order:
+
           <div class="form-group mt-2">
             <button
               class="btn btn-dark rounded-pill btn-block p-2"
@@ -81,19 +83,27 @@
               Order
             </button>
           </div>
+          <div
+            v-if="message"
+            class="alert"
+            :class="successful ? 'alert-success' : 'alert-danger'"
+          >
+            {{ message }}
+          </div>
         </div>
-      </el-form>
+      </Form>
     </div>
   </div>
 </template>
 
 <script>
-import { Field, ErrorMessage } from "vee-validate";
+import { Form, Field, ErrorMessage } from "vee-validate";
 import * as yup from "yup";
 
 export default {
   name: "RegisterPage",
   components: {
+    Form,
     Field,
     ErrorMessage,
   },
@@ -129,9 +139,41 @@ export default {
       schema,
     };
   },
+  computed: {
+    currentUser() {
+      return this.$store.state.auth.user;
+    },
+  },
   methods: {
-    clearFormHandler() {
-      this.$refs.clearForm.reset();
+    saveOrderFormHandler(order) {
+     
+      this.message = "";
+      this.successful = false;
+      this.loading = true;
+      this.$store
+        .dispatch("order/saveOrderEvent", {
+          userid: this.currentUser.user.Id,
+          order: order,
+        })
+        .then(
+          (data) => {
+            this.message = data.message;
+            this.successful = true;
+            this.loading = false;
+            this.$refs.clearForm.reset();
+            this.$router.push("/home");
+          },
+          (error) => {
+            this.message =
+              (error.response &&
+                error.response.data &&
+                error.response.data.message) ||
+              error.message ||
+              error.toString();
+            this.successful = false;
+            this.loading = false;
+          }
+        );
     },
   },
 };
@@ -142,9 +184,9 @@ export default {
   display: flex;
   justify-content: center;
 }
-._form{
-    width: 400px;
-    padding: 10px;
-    margin: 10px;
+._form {
+  width: 400px;
+  padding: 10px;
+  margin: 10px;
 }
-</style> -->
+</style>
