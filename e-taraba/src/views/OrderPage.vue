@@ -3,8 +3,7 @@
     <p>Order Page</p>
     <div class="_container">
       <Form
-        @submit.prevent="saveOrderFormHandler"
-        ref="clearForm"
+        @submit="saveOrderFormHandler"
         :validation-schema="schema"
         class="_form"
       >
@@ -50,6 +49,16 @@
             <ErrorMessage name="email" class="error-feedback color" />
           </div>
           <div class="form-group mt-2">
+            <label for="address" class="lable_class">Address</label>
+            <Field
+              name="address"
+              type="tel"
+              class="form-control field_class"
+              placeholder="Address"
+            />
+            <ErrorMessage name="address" class="error-feedback color" />
+          </div>
+          <div class="form-group mt-2">
             <label for="city" class="lable_class">City:</label>
             <Field
               name="city"
@@ -72,14 +81,7 @@
           Your order:
 
           <div class="form-group mt-2">
-            <button
-              class="btn btn-dark rounded-pill btn-block p-2"
-              :disabled="loading"
-            >
-              <span
-                v-show="loading"
-                class="spinner-border spinner-border-sm"
-              ></span>
+            <button class="btn btn-dark rounded-pill btn-block p-2">
               Order
             </button>
           </div>
@@ -146,22 +148,21 @@ export default {
   },
   methods: {
     saveOrderFormHandler(order) {
-     
       this.message = "";
       this.successful = false;
       this.loading = true;
+      console.log("ORDER");
       this.$store
         .dispatch("order/saveOrderEvent", {
           userid: this.currentUser.user.Id,
           order: order,
         })
         .then(
-          (data) => {
-            this.message = data.message;
+          () => {
+            // this.message = data.message;
             this.successful = true;
             this.loading = false;
-            this.$refs.clearForm.reset();
-            this.$router.push("/home");
+            this.$router.push("/");
           },
           (error) => {
             this.message =
