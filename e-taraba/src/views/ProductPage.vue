@@ -7,7 +7,6 @@
       <div class="product_container">
         <div>
           <h5 class="title">{{ product.name }}</h5>
-          <h6>{{ currentUser.Name }}</h6>
           <p class="__price">{{ product.price }} lei</p>
         </div>
         <div class="__addtocart">
