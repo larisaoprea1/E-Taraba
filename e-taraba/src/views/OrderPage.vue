@@ -158,8 +158,8 @@ export default {
           order: order,
         })
         .then(
-          () => {
-            // this.message = data.message;
+          (data) => {
+            this.message = data.message;
             this.successful = true;
             this.loading = false;
             this.$router.push("/");

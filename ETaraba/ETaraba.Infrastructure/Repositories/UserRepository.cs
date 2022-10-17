@@ -20,6 +20,7 @@ namespace ETaraba.Infrastructure.Repositories
                 .ThenInclude(u=>u.Product)
                 .Include(u=> u.Orders)
                 .ThenInclude(u => u.OrderProducts)
+                .ThenInclude(u => u.Product)
                 .Where(u => u.Id == userId)
                 .FirstOrDefaultAsync();
         }
@@ -31,6 +32,7 @@ namespace ETaraba.Infrastructure.Repositories
                 .ThenInclude(u=> u.Product)
                 .Include(u => u.Orders)
                 .ThenInclude(u => u.OrderProducts)
+                .ThenInclude(u => u.Product)
                 .ToListAsync();
         }
         public void DeleteUser(User user)

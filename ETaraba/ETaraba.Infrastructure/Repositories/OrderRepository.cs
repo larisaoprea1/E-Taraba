@@ -20,6 +20,15 @@ namespace ETaraba.Infrastructure.Repositories
                 .OrderBy(o => o.CreateAt)
                 .ToListAsync();
         }
+        public async Task<IEnumerable<Order>> GetOrdersForUser(Guid userId)
+        {
+            return await _eTarabaContext.Orders
+                .Include(o => o.OrderProducts)
+                .ThenInclude(p => p.Product)
+                .Where(u => u.UserId == userId)
+                .OrderBy(o => o.CreateAt)
+                .ToListAsync();
+        }
         public async Task<Order> GetOrderAsync(Guid orderId)
         {
             return await _eTarabaContext.Orders

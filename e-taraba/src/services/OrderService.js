@@ -9,16 +9,19 @@ const apiClient = axios.create({
   },
 });
 
-export default{
-    saveOrder(userid, order){
-        return apiClient.post(`/saveorder/user/${userid}`,{
-            firstName: order.firstName,
-            lastName: order.lastName,
-            phoneNumber: order.phoneNumber,
-            email: order.email,
-            address: order.address,
-            city: order.city,
-            country: order.country
-        })
-    }
-}
+export default {
+  getOrders(userid) {
+    return apiClient.get(`/orders/${userid}`);
+  },
+  saveOrder(userid, order) {
+    return apiClient.post(`/saveorder/user/${userid}`, {
+      firstName: order.firstName,
+      lastName: order.lastName,
+      phoneNumber: order.phoneNumber,
+      email: order.email,
+      address: order.address,
+      city: order.city,
+      country: order.country,
+    });
+  },
+};

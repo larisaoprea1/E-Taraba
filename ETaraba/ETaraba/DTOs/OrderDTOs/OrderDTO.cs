@@ -13,13 +13,8 @@ namespace ETaraba.DTOs.OrderDTOs
         public string City { get; set; }
         public string Country { get; set; }
         public decimal Total { get; set; }
-        public int NumberOfOrderProducts
-        {
-            get
-            {
-                return OrderProducts.Count;
-            }
-        }
+        public DateTime CreateAt { get; set; }
+        public DateTime UpdateAt { get; set; }
         public ICollection<OrderProductDTO> OrderProducts { get; set; } = new List<OrderProductDTO>();
     }
 }

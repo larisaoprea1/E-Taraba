@@ -12,9 +12,9 @@ export const basket = {
     GET_BASKET(state, basket) {
       state.basket = basket;
     },
-    DELETE_BASKET_PRODUCT(state, id) {
-      var index = state.basketProducts.findIndex(
-        (basketProduct) => basketProduct.id == id
+    DELETE_BASKET_PRODUCT(state, basketProduct) {
+      var index = state.basket.basketProducts.find(
+        b => b.id == basketProduct
       );
       state.basket.basketProducts.splice(index, 1);
     },

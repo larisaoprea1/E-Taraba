@@ -1,12 +1,11 @@
 ﻿using AutoMapper;
-using ETaraba.Application.IRepositories;
 using ETaraba.Application.Orders.Commands.CreateOrder;
+using ETaraba.Application.Orders.Querries.GetOrderById;
+using ETaraba.Application.Orders.Querries.GetOrdersForUser;
 using ETaraba.Domain.Models;
 using ETaraba.DTOs.OrderDTOs;
-using ETaraba.DTOs.ProductDTOs;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace ETaraba.Controllers
 {
@@ -22,6 +21,35 @@ namespace ETaraba.Controllers
         {
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+        }
+        [HttpGet]
+        [Route("{orderId}")]
+        public async Task<IActionResult> GetOrder([FromRoute] Guid orderId)
+        {
+            var result = await _mediator.Send(new GetOrderByIdQuery
+            {
+                Id = orderId
+            });
+            if (result == null)
+            {
+                return NotFound("404");
+            }
+            return Ok(_mapper.Map<OrderDTO>(result));
+        }
+        [HttpGet]
+        [Route("orders/{userId}")]
+        public async Task<IActionResult> GetOrdersForUser([FromRoute] Guid userId)
+        {
+            var result = await _mediator.Send(new GetOrdersForUserQuery
+            {
+                Id = userId
+            });
+            if (result == null)
+            {
+                return NotFound("404");
+            }
+            var mappedResult = _mapper.Map<IEnumerable<OrderDTO>>(result);
+            return Ok(mappedResult);
         }
         [HttpPost]
         [Route("saveorder/user/{Id}")]

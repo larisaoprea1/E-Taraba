@@ -6,6 +6,7 @@ namespace ETaraba.Application.IRepositories
     {
         Task<IEnumerable<Order>> GetOrdersAsync();
         Task<Order> GetOrderAsync(Guid orderId);
+        Task<IEnumerable<Order>> GetOrdersForUser(Guid userId);
         Task CreateOrderAsync(Order order);
         Task UpdateOrderAsync(Order order);
         void DeleteOrder(Order order);

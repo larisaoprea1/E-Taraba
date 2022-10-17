@@ -3,11 +3,8 @@ using ETaraba.Application.Baskets.Commands.AddProductToBasket;
 using ETaraba.Application.Baskets.Commands.DeleteBasketProduct;
 using ETaraba.Application.Baskets.Querries.GetBasketById;
 using ETaraba.Application.Baskets.Querries.GetBasketsProducts;
-using ETaraba.Application.Products.Querries.GetProductById;
-using ETaraba.Domain.Models;
 using ETaraba.DTOs.BasketDTOs;
 using ETaraba.DTOs.BasketProductDTOs;
-using ETaraba.DTOs.ProductDTOs;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
