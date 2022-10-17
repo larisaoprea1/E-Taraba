@@ -1,9 +1,8 @@
 <template>
   <div class="_order_container">
     <h4>Order number: {{ orderProduct.id }}</h4>
-   <p> Order placed at {{orderProduct.createAt}} with the total of {{orderProduct.total}} lei.</p>
-   <p>Made by {{orderProduct.firstName}} {{orderProduct.lastName}}.</p>
-   <router-link>Order details</router-link>
+   <p> Order placed at {{orderProduct.createAt | moment("calendar")}} with the total of {{orderProduct.total}} lei.</p>
+   <p>Made by {{orderProduct.firstName}} {{orderProduct.lastName}}.</p> 
   </div>
 </template>
 
