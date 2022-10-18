@@ -1,13 +1,13 @@
 <template>
   <div class="_order_container">
-    <h4>Order number: {{ orderProduct.id }}</h4>
+    <h4>Order number: {{ order.id }}</h4>
     <p>
       Order placed at {{ orderCreatedDate }} with the total of
-      {{ orderProduct.total }} lei.
+      {{ order.total }} lei.
     </p>
-    <p>Made by {{ orderProduct.firstName }} {{ orderProduct.lastName }}.</p>
+    <p>Made by {{ order.firstName }} {{ order.lastName }}.</p>
     <router-link
-    :to="{ name: 'OrderDetailsPage', params: { id: orderProduct.id } }"
+    :to="{ name: 'OrderDetailsPage', params: { id: order.id } }"
   > Order Details</router-link>
   </div>
 </template>
@@ -16,14 +16,14 @@
 import moment from "moment";
 export default {
   props: {
-    orderProduct: {
+    order: {
       type: Object,
       required: true,
     },
   },
   computed: {
     orderCreatedDate() {
-      return moment(this.orderProduct.createAt).format("DD-MM-YYYY");
+      return moment(this.order.createAt).format("DD-MM-YYYY");
     },
   },
 };

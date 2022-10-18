@@ -70,9 +70,9 @@
       >
         Your orders: 
         <OrderCard
-        v-for="orderProduct in orders"
-          :key="orderProduct.id"
-          :orderProduct="orderProduct"           
+        v-for="order in orders"
+          :key="order.id"
+          :order="order"           
           />
       </div>
       <div

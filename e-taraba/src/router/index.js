@@ -56,6 +56,7 @@ const routes = [
   {
     path: '/order/:id',
     name: 'OrderDetailsPage',
+    props: true,
     component: OrderDetailsPage
   },
 ]

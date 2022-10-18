@@ -33,7 +33,6 @@ export default {
       return this.$store.state.auth.user;
     },
     basket() {
-      console.log(this.$store.state.basket.basket.basketProduct);
       console.log(this.$store.state.basket.basket.basketProducts);
       return this.$store.state.basket.basket.basketProducts;
     },
