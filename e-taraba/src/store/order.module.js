@@ -33,6 +33,7 @@ export const order = {
       return await OrderService.getOrder(id)
         .then((res) => {
           commit("GET_ORDER", res.data);
+          console.log(res.data);
         })
         .catch((error) => {
           throw error;

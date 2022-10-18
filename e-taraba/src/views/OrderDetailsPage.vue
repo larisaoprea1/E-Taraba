@@ -6,9 +6,9 @@
 
 <script>
 export default {
-props: ["id"],
+    props: ["id"],
   created() {
-    this.$store.dispatch("order/fetchOrder", this.order.id);
+    this.$store.dispatch("order/fetchOrder", this.id);
   },
   computed: {
     order() {

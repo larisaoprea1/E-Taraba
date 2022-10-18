@@ -7,7 +7,7 @@
     </p>
     <p>Made by {{ orderProduct.firstName }} {{ orderProduct.lastName }}.</p>
     <router-link
-    :to="{ name: 'OrderDetailsPage', params: { id: order.id } }"
+    :to="{ name: 'OrderDetailsPage', params: { id: orderProduct.id } }"
   > Order Details</router-link>
   </div>
 </template>
@@ -18,6 +18,7 @@ export default {
   props: {
     orderProduct: {
       type: Object,
+      required: true,
     },
   },
   computed: {
