@@ -68,12 +68,12 @@
         role="tabpanel"
         aria-labelledby="nav-profile-tab"
       >
-        Your orders: 
+        Your orders:
         <OrderCard
-        v-for="orderProduct in orders"
+          v-for="orderProduct in orders"
           :key="orderProduct.id"
-          :orderProduct="orderProduct"           
-          />
+          :orderProduct="orderProduct"
+        />
       </div>
       <div
         class="tab-pane fade"

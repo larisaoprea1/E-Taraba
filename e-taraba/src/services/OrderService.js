@@ -13,6 +13,9 @@ export default {
   getOrders(userid) {
     return apiClient.get(`/orders/${userid}`);
   },
+  getOrder(id) {
+    return apiClient.get(`/${id}`);
+  },
   saveOrder(userid, order) {
     return apiClient.post(`/saveorder/user/${userid}`, {
       firstName: order.firstName,

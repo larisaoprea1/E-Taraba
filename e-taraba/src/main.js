@@ -47,6 +47,6 @@ createApp(App)
   .use(Toast, {
     position: POSITION.TOP_RIGHT,
   })
-  .use(require('vue-moment'))
+  .use('vue-moment')
   .component("font-awesome-icon", FontAwesomeIcon)
   .mount("#app");
