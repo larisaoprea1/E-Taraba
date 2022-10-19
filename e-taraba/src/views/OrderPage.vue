@@ -79,7 +79,12 @@
             <ErrorMessage name="country" class="error-feedback color" />
           </div>
           Your order:
-
+          <BasketProductForOrderCard 
+          v-for="productToOrder in basket"
+          :key="productToOrder.id"
+          :productToOrder="productToOrder"
+        />
+          
           <div class="form-group mt-2">
             <button class="btn btn-dark rounded-pill btn-block p-2">
               Order
@@ -101,6 +106,7 @@
 <script>
 import { Form, Field, ErrorMessage } from "vee-validate";
 import * as yup from "yup";
+import BasketProductForOrderCard from "../components/BasketProductForOrderCard.vue";
 
 export default {
   name: "RegisterPage",
@@ -108,7 +114,8 @@ export default {
     Form,
     Field,
     ErrorMessage,
-  },
+    BasketProductForOrderCard
+},
   data() {
     const schema = yup.object().shape({
       firstName: yup
@@ -141,9 +148,16 @@ export default {
       schema,
     };
   },
+  created() {
+    this.$store.dispatch("basket/fetchBasket", this.currentUser.user.BasketId);
+  },
   computed: {
     currentUser() {
       return this.$store.state.auth.user;
+    },
+    basket() {
+      console.log(this.$store.state.basket.basket.basketProducts);
+      return this.$store.state.basket.basket.basketProducts;
     },
   },
   methods: {
@@ -158,8 +172,8 @@ export default {
           order: order,
         })
         .then(
-          (data) => {
-            this.message = data.message;
+          () => {
+            // this.message = data.message;
             this.successful = true;
             this.loading = false;
             this.$router.push("/");

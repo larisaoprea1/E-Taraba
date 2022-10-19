@@ -1,5 +1,5 @@
 <template>
-  <h1 class="mt-3">{{ currentUser.user.UserName }}`s Profile</h1>
+  <!-- <h1 class="mt-3">{{ currentUser.user.UserName }}`s Profile</h1> -->
   <div class="container">
     <nav>
       <div class="nav nav-tabs" id="nav-tab" role="tablist">
