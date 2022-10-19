@@ -146,6 +146,7 @@ export default {
       loading: false,
       message: "",
       schema,
+      total: 0,
     };
   },
   created() {
@@ -159,6 +160,10 @@ export default {
       console.log(this.$store.state.basket.basket.basketProducts);
       return this.$store.state.basket.basket.basketProducts;
     },
+    orderTotal(){
+      let total=1;
+      return total;
+    }
   },
   methods: {
     saveOrderFormHandler(order) {

@@ -2,7 +2,7 @@
   <div v-if="product" class="container">
     <div class="d-flex flex-direction-column mt-4">
       <div class="image_container">
-        <img :src="product.productPhoto" />
+        <Image :src="product.productPhoto" preview />
       </div>
       <div class="product_container">
         <div>
@@ -100,7 +100,7 @@ export default {
   padding: 10px;
   box-shadow: rgba(28, 107, 74, 0.45) 0px 25px 20px -20px;
 }
-.image_container img {
+.image_preview {
   width: 100%;
 }
 .__price {
