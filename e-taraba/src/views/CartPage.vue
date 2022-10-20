@@ -11,7 +11,7 @@
       </div>
       <div class="mt-5 _order_container col-md-3 col-12">
         <p>Livrare gratuita: <span>0,00 lei</span></p>
-        <p>Total:</p>
+        <p>Total: {{orderTotal}} lei</p>
         <a class="btn btn-dark" color="black"
           ><router-link :to="{ name: 'OrderPage' }" class="nav-link"
             >Order now</router-link
@@ -36,6 +36,13 @@ export default {
       console.log(this.$store.state.basket.basket.basketProducts);
       return this.$store.state.basket.basket.basketProducts;
     },
+    orderTotal(){
+      let total=0;
+      this.basket.forEach((product)=>{
+        total += product.price;
+      })
+      return total;
+    }
   },
   components: { BasketProductCard },
 };

@@ -36,6 +36,7 @@ export default {
 .__link {
   text-decoration: none;
   color: black;
+  margin-bottom: 20px;
 }
 .__bold {
   font-weight: bold;

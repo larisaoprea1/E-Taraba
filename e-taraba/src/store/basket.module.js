@@ -13,7 +13,7 @@ export const basket = {
       state.basket = basket;
     },
     DELETE_BASKET_PRODUCT(state, basketProduct) {
-      var index = state.basket.basketProducts.find(
+      var index = state.basket.basketProducts.findIndex(
         b => b.id == basketProduct
       );
       state.basket.basketProducts.splice(index, 1);

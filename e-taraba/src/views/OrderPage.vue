@@ -84,7 +84,7 @@
           :key="productToOrder.id"
           :productToOrder="productToOrder"
         />
-          
+          <p> Total order price: {{orderTotal}}</p>
           <div class="form-group mt-2">
             <button class="btn btn-dark rounded-pill btn-block p-2">
               Order
@@ -161,7 +161,10 @@ export default {
       return this.$store.state.basket.basket.basketProducts;
     },
     orderTotal(){
-      let total=1;
+      let total=0;
+      this.basket.forEach((product)=>{
+        total += product.price;
+      })
       return total;
     }
   },

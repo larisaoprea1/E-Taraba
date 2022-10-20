@@ -2,7 +2,7 @@
   <div v-if="product" class="container">
     <div class="d-flex flex-direction-column mt-4">
       <div class="image_container">
-        <Image :src="product.productPhoto" preview />
+        <Image :src="product.productPhoto" width="500" preview />
       </div>
       <div class="product_container">
         <div>

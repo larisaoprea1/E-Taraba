@@ -17,7 +17,7 @@
       :orderProduct="orderProduct"
     />
     </div>
-    <p class="">Total order price: {{ order.total }} lei</p>
+    <p class="_total_order">Total order price: {{ order.total }} lei</p>
   </div>
 </template>
 
@@ -64,5 +64,9 @@ export default {
   flex-direction: row;
   justify-content: center;
   gap: 50px;
+}
+._total_order{
+  font-size: larger;
+  margin-bottom: 20px;
 }
 </style>
