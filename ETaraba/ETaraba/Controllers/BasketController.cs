@@ -2,6 +2,7 @@
 using ETaraba.Application.Baskets.Commands.AddProductToBasket;
 using ETaraba.Application.Baskets.Commands.DeleteBasketProduct;
 using ETaraba.Application.Baskets.Commands.SaveBasketProduct;
+using ETaraba.Application.Baskets.Commands.UpdateBasketProductQuantity;
 using ETaraba.Application.Baskets.Querries.GetBasketById;
 using ETaraba.Application.Baskets.Querries.GetBasketProductById;
 using ETaraba.Application.Baskets.Querries.GetBasketsProducts;
@@ -61,32 +62,28 @@ namespace ETaraba.Controllers
             });
             return Ok("200");
         }
-        [HttpPatch]
-        [Route("updatequantity/{basketProductId}")]
-        public async Task<ActionResult<BasketProductDTO>> UpdateBasketProductQuantity(Guid basketProductId, JsonPatchDocument<BasketProductQuantityUpdateDTO> patchDocument)
+        [HttpPut]
+        [Route("updatequantity/{basketProductId}/quantity/{quantity}")]
+        public async Task<IActionResult> UpdateBasketProductQuantity(Guid basketProductId,int quantity)
         {
             var basketProductToFind = await _mediator.Send(new GetBasketProductByIdQuery
             {
                 Id = basketProductId
             });
+
             if (basketProductToFind == null)
             {
                 return NotFound("404");
             }
-            var basketProductToPatch = _mapper.Map<BasketProductQuantityUpdateDTO>(basketProductToFind);
-            patchDocument.ApplyTo(basketProductToPatch, ModelState);
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
 
-            if (!TryValidateModel(basketProductToPatch))
+            var update = await _mediator.Send(new UpdateBasketProductQuantityCommand
             {
-                return BadRequest(ModelState);
-            }
-            _mapper.Map(basketProductToPatch, basketProductToFind);
-            await _mediator.Send(new SaveBasketProductCommand());
-            return Ok("200");
+                Id = basketProductId,
+                Quantity = quantity
+            });
+
+            var basketProductToReturn = _mapper.Map<BasketProductDTO>(update);
+            return Ok(basketProductToReturn);
         }
         [HttpDelete("{basketProductId}")]
         public async Task<ActionResult> DeleteBasketProduct(Guid basketProductId)
