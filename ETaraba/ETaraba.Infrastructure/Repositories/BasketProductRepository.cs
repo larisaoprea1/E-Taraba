@@ -22,7 +22,6 @@ namespace ETaraba.Infrastructure.Repositories
         {
             return await _eTarabaContext.BasketProducts
                 .Include(p => p.Product)
-                .AsNoTracking()
                 .Where(p => p.Id == basketProductId)
                 .FirstOrDefaultAsync();
         }
