@@ -1,11 +1,15 @@
 ﻿using AutoMapper;
 using ETaraba.Application.Baskets.Commands.AddProductToBasket;
 using ETaraba.Application.Baskets.Commands.DeleteBasketProduct;
+using ETaraba.Application.Baskets.Commands.SaveBasketProduct;
 using ETaraba.Application.Baskets.Querries.GetBasketById;
+using ETaraba.Application.Baskets.Querries.GetBasketProductById;
 using ETaraba.Application.Baskets.Querries.GetBasketsProducts;
+using ETaraba.Application.IRepositories;
 using ETaraba.DTOs.BasketDTOs;
 using ETaraba.DTOs.BasketProductDTOs;
 using MediatR;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ETaraba.Controllers
@@ -16,12 +20,14 @@ namespace ETaraba.Controllers
     {
         private readonly IMediator _mediator;
         private readonly IMapper _mapper;
+        private readonly IBasketProductRepository _basketProductRepository;
 
         public BasketController(
-            IMediator mediator, IMapper mapper)
+            IMediator mediator, IMapper mapper, IBasketProductRepository basketProductRepository)
         {
             _mapper = mapper;
             _mediator = mediator;
+            _basketProductRepository = basketProductRepository; 
         }
         [HttpGet]
         [Route("basketproducts")]
@@ -56,6 +62,33 @@ namespace ETaraba.Controllers
                 ProductId = productId,
                 Count = count
             });
+            return Ok("200");
+        }
+        [HttpPatch]
+        [Route("updatequantity/{basketProductId}")]
+        public async Task<IActionResult> UpdateBasketProductQuantity(Guid basketProductId, JsonPatchDocument<BasketProductQuantityUpdateDTO> patchDocument)
+        {
+            var basketProductToFind = await _mediator.Send(new GetBasketProductByIdQuery
+            {
+                Id = basketProductId
+            });
+            if (basketProductToFind == null)
+            {
+                return NotFound("404");
+            }
+            var basketProductToPatch = _mapper.Map<BasketProductQuantityUpdateDTO>(basketProductToFind);
+            patchDocument.ApplyTo(basketProductToPatch, ModelState);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!TryValidateModel(basketProductToPatch))
+            {
+                return BadRequest(ModelState);
+            }
+            _mapper.Map(basketProductToPatch, basketProductToFind);
+            await _mediator.Send(new SaveBasketProductCommand());
             return Ok("200");
         }
         [HttpDelete("{basketProductId}")]

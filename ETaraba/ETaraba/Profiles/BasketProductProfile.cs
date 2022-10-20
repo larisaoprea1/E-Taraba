@@ -10,6 +10,8 @@ namespace ETaraba.Profiles
         {
             CreateMap<BasketProduct, BasketProductDTO>();
             CreateMap<BasketProductDTO, BasketProduct>();
+            CreateMap<BasketProduct, BasketProductQuantityUpdateDTO>();
+            CreateMap<BasketProductQuantityUpdateDTO, BasketProduct>();
         }
     }
 }
