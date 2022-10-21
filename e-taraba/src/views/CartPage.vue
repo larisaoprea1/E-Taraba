@@ -10,13 +10,17 @@
         />
       </div>
       <div class="mt-5 _order_container col-md-3 col-12">
-        <p>Livrare gratuita: <span>0,00 lei</span></p>
-        <p>Total: {{orderTotal}} lei</p>
+        <div class="_price_order">
+          <p>Livrare gratuita: </p><span>0,00 lei</span>
+        </div>
+        <div class="_price_order">
+          <p>Total: </p><span>{{ orderTotal }} lei</span>
+        </div>
         <a class="btn btn-dark" color="black"
           ><router-link :to="{ name: 'OrderPage' }" class="nav-link"
             >Order now</router-link
-          ></a>
-    
+          ></a
+        >
       </div>
     </div>
   </div>
@@ -26,7 +30,12 @@ import BasketProductCard from "@/components/BasketProductCard.vue";
 export default {
   name: "CartPage",
   created() {
-    this.$store.dispatch("basket/fetchBasket", this.currentUser.user.BasketId);
+    if (this.currentUser) {
+      this.$store.dispatch(
+        "basket/fetchBasket",
+        this.currentUser.user.BasketId
+      );
+    }
   },
   computed: {
     currentUser() {
@@ -36,13 +45,16 @@ export default {
       console.log(this.$store.state.basket.basket.basketProducts);
       return this.$store.state.basket.basket.basketProducts;
     },
-    orderTotal(){
-      let total=0;
-      this.basket.forEach((product)=>{
-        total += product.price;
-      })
-      return total;
-    }
+    orderTotal() {
+      if (this.basket != undefined) {
+        let total = 0;
+        this.basket.forEach((product) => {
+          total += product.price;
+        });
+        return total;
+      }
+      return 0;
+    },
   },
   components: { BasketProductCard },
 };
@@ -55,7 +67,7 @@ export default {
   border-radius: 5px;
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
     rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
-    padding: 20px;
+  padding: 20px;
   max-width: fit-content;
 }
 ._title {
@@ -73,12 +85,27 @@ export default {
   border-radius: 5px;
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
     rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
-    padding: 20px;
+  padding: 20px;
 }
 ._container {
   justify-content: space-around;
 }
 ._button {
   width: 30%;
+}
+._price_order{
+  display: flex;
+ justify-content: space-between;
+ width: 300px;
+}
+@media(max-width: 1260px){
+  ._price_order{
+    width: auto;
+  }
+}
+@media(max-width:650px){
+  ._price_order{
+    width: 300px;
+  }
 }
 </style>

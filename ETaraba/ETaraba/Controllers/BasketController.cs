@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using ETaraba.Application.Baskets.Commands.AddProductToBasket;
 using ETaraba.Application.Baskets.Commands.DeleteBasketProduct;
-using ETaraba.Application.Baskets.Commands.SaveBasketProduct;
 using ETaraba.Application.Baskets.Commands.UpdateBasketProductQuantity;
 using ETaraba.Application.Baskets.Querries.GetBasketById;
 using ETaraba.Application.Baskets.Querries.GetBasketProductById;
@@ -9,7 +8,6 @@ using ETaraba.Application.Baskets.Querries.GetBasketsProducts;
 using ETaraba.DTOs.BasketDTOs;
 using ETaraba.DTOs.BasketProductDTOs;
 using MediatR;
-using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ETaraba.Controllers
@@ -54,13 +52,14 @@ namespace ETaraba.Controllers
         [Route("user/{userId}/product/{productId}/count/{count}")]
         public async Task<IActionResult> AddProductToBasket(Guid userId, Guid productId, int count)
         {
-            await _mediator.Send(new AddProductToBasketCommand
+            var basketProduct = await _mediator.Send(new AddProductToBasketCommand
             {
                 UserId = userId,
                 ProductId = productId,
                 Count = count
             });
-            return Ok("200");
+            var result = _mapper.Map<BasketProductDTO>(basketProduct);
+            return Ok(result);
         }
         [HttpPut]
         [Route("updatequantity/{basketProductId}/quantity/{quantity}")]

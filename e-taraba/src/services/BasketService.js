@@ -16,6 +16,9 @@ export default {
     addProductToCart(userid,productid,count){
         return apiClient.post(`/user/${userid}/product/${productid}/count/${count}`)
     },
+    updateProductQuantity(basketProductId, quantity){
+      return apiClient.put(`/updatequantity/${basketProductId}/quantity/${quantity}`)
+    },
     removeBasketProduct(id){
       return apiClient.delete(`/${id}`)
     }

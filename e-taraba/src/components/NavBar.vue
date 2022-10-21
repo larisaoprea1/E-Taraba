@@ -29,7 +29,7 @@
         :to="{ name: 'CartPage' }"
         class="nav-link d-flex align-items-center gap-2"
       >
-      <i v-if="quantityCount==0"
+      <i v-if="quantityCount===0"
           class="pi pi-shopping-cart mr-4 p-text-secondary"  style="font-size: 1.5rem"></i>
         <i v-if="quantityCount>0"
           class="pi pi-shopping-cart mr-4 p-text-secondary"
@@ -76,6 +76,11 @@ export default {
       count: 0,
     }
   },
+  created() {
+    if (this.currentUser) {
+      this.$store.dispatch("basket/fetchBasket", this.currentUser.user.BasketId);
+    }
+  },
   computed: {
     currentUser() {
       return this.$store.state.auth.user;
@@ -84,11 +89,14 @@ export default {
       return this.$store.state.basket.basket.basketProducts;
     },
     quantityCount(){
-      let count= 0;
-      this.basket.forEach((product)=>{
-        count += product.quantity;
-      })
-      return count;
+      if (this.basket != undefined) {
+        let count = 0;
+        this.basket.forEach((product) => {
+          count += product.quantity;
+        })
+        return count;
+      }
+      return 0;
     },
   },
   methods: {

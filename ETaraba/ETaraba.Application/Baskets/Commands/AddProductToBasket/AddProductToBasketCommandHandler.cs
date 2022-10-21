@@ -22,11 +22,22 @@ namespace ETaraba.Application.Baskets.Commands.AddProductToBasket
             var user = await _userRepository.GetUserAsync(request.UserId);
             if(user.Basket.BasketProducts.Any(b=>b.ProductId == request.ProductId))
             {
-                var basketProduct = await _basketProductRepository.GetBasketProductByProductIdAsync(user.BasketId,request.ProductId);
-                basketProduct.Quantity += request.Count;
-                basketProduct.Price +=request.Count * product.Price;
-                await _basketProductRepository.SaveAsync();
-                return basketProduct;
+                {
+                    var itemIfExists = new BasketProduct
+                    {
+                        BasketId = user.BasketId,
+                        ProductId = request.ProductId,
+                        Quantity = request.Count,
+                        Price = product.Price * request.Count
+                    };
+
+                    var basketProduct = await _basketProductRepository.GetBasketProductByProductIdAsync(user.BasketId, request.ProductId);
+                    basketProduct.Quantity += request.Count;
+                    basketProduct.Price += request.Count * product.Price;
+                    await _basketProductRepository.SaveAsync();
+                    return itemIfExists;
+                }
+
             }
             var item = new BasketProduct
             {
