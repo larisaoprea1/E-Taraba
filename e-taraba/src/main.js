@@ -15,6 +15,8 @@ import VueAnimateOnScroll from "vue-animate-onscroll";
 import Toast, { POSITION } from "vue-toastification";
 import PrimeVue from 'primevue/config';
 import Image from 'primevue/image';
+import Badge from 'primevue/badge';
+import BadgeDirective from "primevue/badgedirective";
 import DialogService from 'primevue/dialogservice'
 import "vue-toastification/dist/index.css";
 
@@ -55,7 +57,9 @@ createApp(App)
   })
   .use(PrimeVue)
   .use(DialogService)
+  .directive('badge', BadgeDirective)
   .component('Image', Image)
+  .component('Badge', Badge)
   .use('vue-moment')
   .component("font-awesome-icon", FontAwesomeIcon)
   .mount("#app");

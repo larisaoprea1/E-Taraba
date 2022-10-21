@@ -26,9 +26,17 @@
 
     <el-menu-item index="5"
       ><router-link
-        :to="{ name: 'CartPage'}"
+        :to="{ name: 'CartPage' }"
         class="nav-link d-flex align-items-center gap-2"
-        ><font-awesome-icon icon="fa-solid fa-cart-shopping " /> Cart
+      >
+      <i v-if="quantityCount==0"
+          class="pi pi-shopping-cart mr-4 p-text-secondary"  style="font-size: 1.5rem"></i>
+        <i v-if="quantityCount>0"
+          class="pi pi-shopping-cart mr-4 p-text-secondary"
+          style="font-size: 1.5rem"
+          v-badge.danger="quantityCount"
+        ></i>
+        Cart
       </router-link></el-menu-item
     >
     <el-menu-item index="3" v-if="!currentUser"
@@ -45,10 +53,10 @@
       ><router-link
         :to="{ name: 'profile' }"
         class="nav-link d-flex align-items-center gap-2"
-        >Hello,
-        {{ currentUser.user.UserName }}!<el-avatar :size="40" :src="currentUser.user.ProfileImage" /></router-link
-      ></el-menu-item
-    >
+        >Hello, {{ currentUser.user.UserName }}!<el-avatar
+          :size="40"
+          :src="currentUser.user.ProfileImage" /></router-link
+    ></el-menu-item>
     <el-menu-item index="7" v-if="currentUser"
       ><a
         class="nav-link d-flex align-items-center gap-2"
@@ -61,12 +69,26 @@
 </template>
 
 <script>
-
 export default {
   name: "NavBar",
+  data(){
+    return{
+      count: 0,
+    }
+  },
   computed: {
     currentUser() {
       return this.$store.state.auth.user;
+    },
+    basket() {
+      return this.$store.state.basket.basket.basketProducts;
+    },
+    quantityCount(){
+      let count= 0;
+      this.basket.forEach((product)=>{
+        count += product.quantity;
+      })
+      return count;
     },
   },
   methods: {
