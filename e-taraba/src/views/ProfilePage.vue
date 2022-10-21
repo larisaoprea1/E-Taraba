@@ -1,6 +1,7 @@
 <template>
-  <!-- <h1 class="mt-3">{{ currentUser.user.UserName }}`s Profile</h1> -->
+ 
   <div class="container">
+     <h1 class="mt-3">{{ currentUser.user.UserName }}`s Profile</h1>
     <nav>
       <div class="nav nav-tabs" id="nav-tab" role="tablist">
         <button

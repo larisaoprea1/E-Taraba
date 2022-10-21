@@ -1,6 +1,6 @@
 <template>
-  <h3 class="_title">Cart</h3>
   <div class="_container">
+    <h3 class="_title">Cart</h3>
     <div class="row d-flex _container">
       <div class="_basket_container col-md-9 col-12">
         <BasketProductCard
@@ -69,6 +69,7 @@ export default {
     rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
   padding: 20px;
   max-width: fit-content;
+  margin-bottom: 20px;
 }
 ._title {
   margin-top: 20px;
