@@ -15,7 +15,7 @@
           />
         </router-link>
       </div>
-      <div class="d-flex _information_container">
+      <div class="d-flex _information_container"> 
         <div>
           <router-link
             class="__link"
@@ -38,13 +38,22 @@
               v-show="loading"
               class="spinner-border spinner-border-sm"
             ></span
-            ><span><font-awesome-icon icon="fa-trash-can"/>Remove</span></el-button
+            ><span
+              ><font-awesome-icon icon="fa-trash-can" />Remove</span
+            ></el-button
           >
         </div>
       </div>
     </div>
     <div class="_price_container">
-      <p><span class="_font">{{ basketProduct.price }} </span>lei</p>
+      <p>
+        <span class="_font">{{ basketProduct.price }} </span>lei
+      </p>
+      <div class="_quantity_container">
+        <button @click.prevent="handleDecrementQuantity"> - </button>
+        <p>{{ basketProduct.quantity }}</p>
+        <a>+</a>
+      </div>
     </div>
   </div>
 </template>
@@ -76,6 +85,12 @@ export default {
       );
       this.toast.success("The item was removed!");
     },
+    handleDecrementQuantity(){
+      this.$store.dispatch("basket/updateQuantityForBasketProduct", {
+      productid: this.basketProduct.id,
+      quantity: this.basketProduct.quantity,
+    })
+    }
   },
 };
 </script>
@@ -94,7 +109,7 @@ export default {
   margin-left: 10px;
   margin-bottom: 10px;
 }
-._information_container h6{
+._information_container h6 {
   font-size: large;
   font-weight: bold;
 }
@@ -107,9 +122,16 @@ export default {
   text-decoration: none;
   color: black;
 }
-._font{
-  font-family: 'Monaco', Courier, monospace;
+._font {
+  font-family: "Monaco", Courier, monospace;
   font-weight: bolder;
   color: black;
 }
+._quantity_container{
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  }
+
 </style>
