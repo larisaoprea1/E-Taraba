@@ -3,6 +3,12 @@
     <h3 class="_title">Cart</h3>
     <div class="row d-flex _container">
       <div class="_basket_container col-md-9 col-12">
+        <p v-if="basket.length === 0">
+          Sorry, you didnt add any item in the cart yet! Please check our
+          <router-link :to="{ name: 'home' }" class="nav-link"
+            >store</router-link
+          >
+        </p>
         <BasketProductCard
           v-for="basketProduct in basket"
           :key="basketProduct.id"
@@ -19,7 +25,29 @@
           <p>Total:</p>
           <span>{{ orderTotal }} lei</span>
         </div>
-        <a class="btn btn-dark" color="black"
+        <div v-if="basket.length === 0">
+          <a class="btn btn-dark" color="black" @click="openBasic" >Order</a>
+          <Dialog
+            header="You can`t order nothing!"
+            v-model:visible="displayBasic"
+            :breakpoints="{ '960px': '75vw', '640px': '90vw' }"
+            :style="{ width: '50vw' }"
+          >
+            <p>
+              Sorry, you need to add products to the cart to make an
+              order!
+            </p>
+            <template #footer>
+              <Button
+                label="I understand!"
+                icon="pi pi-check"
+                @click="closeBasic"
+                class="p-button-text p-button-success"
+              />
+            </template>
+          </Dialog>
+        </div>
+        <a v-else class="btn btn-dark" color="black"
           ><router-link :to="{ name: 'OrderPage' }" class="nav-link"
             >Order now</router-link
           ></a
@@ -32,6 +60,11 @@
 import BasketProductCard from "@/components/BasketProductCard.vue";
 export default {
   name: "CartPage",
+  data(){
+    return{
+      displayBasic: false
+    }
+  },
   created() {
     if (this.currentUser) {
       this.$store.dispatch(
@@ -66,6 +99,12 @@ export default {
         this.currentUser.user.Id
       );
     },
+    openBasic() {
+            this.displayBasic = true;
+        },
+        closeBasic() {
+            this.displayBasic = false;
+        },
   },
   components: { BasketProductCard },
 };

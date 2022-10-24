@@ -16,6 +16,8 @@ import Toast, { POSITION } from "vue-toastification";
 import PrimeVue from 'primevue/config';
 import Image from 'primevue/image';
 import Badge from 'primevue/badge';
+import Button from 'primevue/button';
+import Dialog from 'primevue/dialog';
 import BadgeDirective from "primevue/badgedirective";
 import DialogService from 'primevue/dialogservice'
 import "vue-toastification/dist/index.css";
@@ -60,6 +62,8 @@ createApp(App)
   .directive('badge', BadgeDirective)
   .component('Image', Image)
   .component('Badge', Badge)
+  .component('Button', Button)
+  .component('Dialog', Dialog)
   .use('vue-moment')
   .component("font-awesome-icon", FontAwesomeIcon)
   .mount("#app");

@@ -15,7 +15,7 @@
           />
         </router-link>
       </div>
-      <div class="d-flex _information_container"> 
+      <div class="d-flex _information_container">
         <div>
           <router-link
             class="__link"
@@ -50,9 +50,11 @@
         <span class="_font">{{ basketProduct.price }} </span>lei
       </p>
       <div class="_quantity_container">
-        <button @click.prevent="handleDecrementQuantity"> - </button>
+        <a @click.prevent="handleDecrementQuantity" class="_update">
+          -
+        </a>
         <p>{{ basketProduct.quantity }}</p>
-        <a @click.prevent="handleIncrementQuantity">+</a>
+        <a @click.prevent="handleIncrementQuantity" class="_update">+</a>
       </div>
     </div>
   </div>
@@ -85,18 +87,24 @@ export default {
       );
       this.toast.success("The item was removed!");
     },
-    handleDecrementQuantity(){
-      this.$store.dispatch("basket/decreaseQuantityForBasketProduct", {
-      productid: this.basketProduct.id,
-      quantity: this.basketProduct.quantity-1,
-    })
+    handleDecrementQuantity() {
+      if(this.basketProduct.quantity == 1){
+        this.handleRemoveBasketProduct();
+      }
+      else{
+        this.$store.dispatch("basket/decreaseQuantityForBasketProduct", {
+        productid: this.basketProduct.id,
+        quantity: this.basketProduct.quantity - 1,
+      });
+      }
+      
     },
-    handleIncrementQuantity(){
+    handleIncrementQuantity() {
       this.$store.dispatch("basket/increaseQuantityForBasketProduct", {
-      productid: this.basketProduct.id,
-      quantity: this.basketProduct.quantity+1,
-    })
-    }
+        productid: this.basketProduct.id,
+        quantity: this.basketProduct.quantity + 1,
+      });
+    },
   },
 };
 </script>
@@ -133,11 +141,22 @@ export default {
   font-weight: bolder;
   color: black;
 }
-._quantity_container{
+._quantity_container {
   display: flex;
   justify-content: center;
   gap: 10px;
   cursor: pointer;
-  }
-
+}
+._update{
+  text-decoration: none;
+  width: 30px;
+height: 30px;
+color: black;
+border: 1px solid black;
+border-radius: 15px;
+}
+._update:hover{
+  color: white;
+  background-color: black;
+}
 </style>
