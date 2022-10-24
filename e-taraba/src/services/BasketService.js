@@ -21,5 +21,8 @@ export default {
     },
     removeBasketProduct(id){
       return apiClient.delete(`/${id}`)
+    },
+    emptyCartProducts(userid){
+      return apiClient.delete(`emptycart/${userid}`)
     }
 }

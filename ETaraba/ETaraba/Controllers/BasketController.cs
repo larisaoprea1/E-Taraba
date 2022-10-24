@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ETaraba.Application.Baskets.Commands.AddProductToBasket;
 using ETaraba.Application.Baskets.Commands.DeleteBasketProduct;
+using ETaraba.Application.Baskets.Commands.EmptyCart;
 using ETaraba.Application.Baskets.Commands.UpdateBasketProductQuantity;
 using ETaraba.Application.Baskets.Querries.GetBasketById;
 using ETaraba.Application.Baskets.Querries.GetBasketProductById;
@@ -90,6 +91,16 @@ namespace ETaraba.Controllers
             await _mediator.Send(new DeleteBasketProductCommand
             {
                 Id = basketProductId
+            });
+            return Ok("200");
+        }
+        [HttpDelete]
+        [Route("emptycart/{userId}")]
+        public async Task<ActionResult> EmptyCartItems(Guid userId)
+        {
+            await _mediator.Send(new EmptyCartCommand
+            {
+                UserId = userId
             });
             return Ok("200");
         }

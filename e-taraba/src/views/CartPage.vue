@@ -8,13 +8,16 @@
           :key="basketProduct.id"
           :basketProduct="basketProduct"
         />
+        <a class="btn btn-dark" @click.prevent="handleEmptyCart">Empty Cart</a>
       </div>
       <div class="mt-5 _order_container col-md-3 col-12">
         <div class="_price_order">
-          <p>Livrare gratuita: </p><span>0,00 lei</span>
+          <p>Livrare gratuita:</p>
+          <span>0,00 lei</span>
         </div>
         <div class="_price_order">
-          <p>Total: </p><span>{{ orderTotal }} lei</span>
+          <p>Total:</p>
+          <span>{{ orderTotal }} lei</span>
         </div>
         <a class="btn btn-dark" color="black"
           ><router-link :to="{ name: 'OrderPage' }" class="nav-link"
@@ -56,6 +59,14 @@ export default {
       return 0;
     },
   },
+  methods: {
+    handleEmptyCart() {
+      this.$store.dispatch(
+        "basket/emptyBasketProductsEvent",
+        this.currentUser.user.Id
+      );
+    },
+  },
   components: { BasketProductCard },
 };
 </script>
@@ -94,18 +105,18 @@ export default {
 ._button {
   width: 30%;
 }
-._price_order{
+._price_order {
   display: flex;
- justify-content: space-between;
- width: 300px;
+  justify-content: space-between;
+  width: 300px;
 }
-@media(max-width: 1260px){
-  ._price_order{
+@media (max-width: 1260px) {
+  ._price_order {
     width: auto;
   }
 }
-@media(max-width:650px){
-  ._price_order{
+@media (max-width: 650px) {
+  ._price_order {
     width: 300px;
   }
 }

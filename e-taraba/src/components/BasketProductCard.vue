@@ -52,7 +52,7 @@
       <div class="_quantity_container">
         <button @click.prevent="handleDecrementQuantity"> - </button>
         <p>{{ basketProduct.quantity }}</p>
-        <a>+</a>
+        <a @click.prevent="handleIncrementQuantity">+</a>
       </div>
     </div>
   </div>
@@ -86,9 +86,15 @@ export default {
       this.toast.success("The item was removed!");
     },
     handleDecrementQuantity(){
-      this.$store.dispatch("basket/updateQuantityForBasketProduct", {
+      this.$store.dispatch("basket/decreaseQuantityForBasketProduct", {
       productid: this.basketProduct.id,
-      quantity: this.basketProduct.quantity,
+      quantity: this.basketProduct.quantity-1,
+    })
+    },
+    handleIncrementQuantity(){
+      this.$store.dispatch("basket/increaseQuantityForBasketProduct", {
+      productid: this.basketProduct.id,
+      quantity: this.basketProduct.quantity+1,
     })
     }
   },
