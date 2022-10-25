@@ -23,9 +23,12 @@ namespace ETaraba.Controllers
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
         [HttpGet]
-        public async Task<IActionResult> GetAllProducts()
+        public async Task<IActionResult> GetAllProducts([FromQuery] string? searchProduct)
         {
-            var result = await _mediator.Send(new GetAllProductsQuery());
+            var result = await _mediator.Send(new GetAllProductsQuery
+            {
+                SearchString = searchProduct
+            });
             var products = _mapper.Map<IEnumerable<ProductDTO>>(result);
             return Ok(products);
         }

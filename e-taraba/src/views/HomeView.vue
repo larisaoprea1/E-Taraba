@@ -1,5 +1,7 @@
 <template>
   <ImageSlider />
+  <input v-model="searchProduct"/>
+  <button @click.prevent="handleSearchProduct">Search</button>
   <div class="container">
     <div class="row">
       <ProductCard
@@ -21,14 +23,24 @@ export default {
     ProductCard,
     ImageSlider,
   },
+  data(){
+    return{
+      searchProduct: ""
+    }
+  },
   created() {
-    this.$store.dispatch("product/fetchProducts");
+    this.$store.dispatch("product/fetchProducts", this.searchProduct="");
   },
   computed: {
     products() {
       console.log(this.$store.state.product);
       return this.$store.state.product.products;
     },
+  },
+  methods:{
+    handleSearchProduct(){
+      this.$store.dispatch("product/fetchProducts", this.searchProduct);
+    }
   },
 };
 </script>

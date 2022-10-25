@@ -3,6 +3,7 @@ import ProductServices from "@/services/ProductServices";
 const initialState = {
   products: [],
   product: {},
+  searchString: ""
 };
 
 export const product = {
@@ -17,8 +18,8 @@ export const product = {
     }
   },
   actions: {
-    async fetchProducts({ commit }) {
-      return await ProductServices.getProducts()
+    async fetchProducts({ commit }, searchProduct) {
+      return await ProductServices.getProducts(searchProduct)
         .then((res) => {
           commit("GET_PRODUCTS", res.data);
         })

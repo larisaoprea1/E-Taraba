@@ -12,9 +12,16 @@ namespace ETaraba.Infrastructure.Repositories
         {
             _eTarabaContext = eTarabaContext;
         }
-        public async Task<IEnumerable<Product>> GetProductsAsync()
+        public async Task<IEnumerable<Product>> GetProductsAsync(string searchString)
         {
-            return await _eTarabaContext.Products.ToListAsync();
+            var products = from p in _eTarabaContext.Products
+                           select p;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                products = products.Where(s => s.Name!.Contains(searchString));
+            }
+
+            return await products.ToListAsync();
         }
         public async Task<Product> GetProductAsync(Guid productId)
         {

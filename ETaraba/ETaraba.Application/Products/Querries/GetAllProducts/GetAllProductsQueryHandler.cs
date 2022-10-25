@@ -13,7 +13,7 @@ namespace ETaraba.Application.Products.Querries.GetAllProducts
         }
         public async Task<IEnumerable<Product>> Handle(GetAllProductsQuery request, CancellationToken cancellationToken)
         {
-            return await _productRepository.GetProductsAsync();
+            return await _productRepository.GetProductsAsync(request.SearchString);
         }
     }
 }

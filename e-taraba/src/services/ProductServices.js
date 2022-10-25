@@ -10,8 +10,8 @@ const apiClient = axios.create({
 });
 
 export default {
-  getProducts() {
-    return apiClient.get();
+  getProducts(searchProduct) {
+    return apiClient.get(`/?searchProduct=${searchProduct}`);
   },
   getProduct(id){
     return apiClient.get(`/${id}`)
