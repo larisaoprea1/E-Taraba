@@ -1,14 +1,16 @@
 <template>
-  <ImageSlider />
-  <input v-model="searchProduct"/>
-  <button @click.prevent="handleSearchProduct">Search</button>
-  <div class="container">
-    <div class="row">
-      <ProductCard
-        v-for="product in products"
-        :key="product.id"
-        :product="product"
-      />
+  <div>
+    <ImageSlider />
+    <input v-model="searchProduct" />
+    <button @click.prevent="handleSearchProduct">Search</button>
+    <div class="container">
+      <div class="row">
+        <ProductCard
+          v-for="product in products"
+          :key="product.id"
+          :product="product"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -23,13 +25,13 @@ export default {
     ProductCard,
     ImageSlider,
   },
-  data(){
-    return{
-      searchProduct: ""
-    }
+  data() {
+    return {
+      searchProduct: "",
+    };
   },
   created() {
-    this.$store.dispatch("product/fetchProducts", this.searchProduct="");
+    this.$store.dispatch("product/fetchProducts", (this.searchProduct = ""));
   },
   computed: {
     products() {
@@ -37,10 +39,10 @@ export default {
       return this.$store.state.product.products;
     },
   },
-  methods:{
-    handleSearchProduct(){
+  methods: {
+    handleSearchProduct() {
       this.$store.dispatch("product/fetchProducts", this.searchProduct);
-    }
+    },
   },
 };
 </script>

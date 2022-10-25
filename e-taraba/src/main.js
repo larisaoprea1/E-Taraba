@@ -18,6 +18,8 @@ import Image from 'primevue/image';
 import Badge from 'primevue/badge';
 import Button from 'primevue/button';
 import Dialog from 'primevue/dialog';
+import InputNumber from 'primevue/inputnumber';
+import InputText from 'primevue/inputtext';
 import BadgeDirective from "primevue/badgedirective";
 import DialogService from 'primevue/dialogservice'
 import "vue-toastification/dist/index.css";
@@ -64,6 +66,8 @@ createApp(App)
   .component('Badge', Badge)
   .component('Button', Button)
   .component('Dialog', Dialog)
+  .component('InputNumber', InputNumber)
+  .component('InputText', InputText)
   .use('vue-moment')
   .component("font-awesome-icon", FontAwesomeIcon)
   .mount("#app");

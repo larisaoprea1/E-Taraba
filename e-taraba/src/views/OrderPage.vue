@@ -58,7 +58,7 @@
             />
             <ErrorMessage name="address" class="error-feedback color" />
           </div>
-          <div class="form-group mt-2">
+          <div class="form-group mt-2 ">
             <label for="city" class="lable_class">City:</label>
             <Field
               name="city"
@@ -68,7 +68,7 @@
             />
             <ErrorMessage name="city" class="error-feedback color" />
           </div>
-          <div class="form-group mt-2">
+          <div class="form-group mt-2 mb-2">
             <label for="country" class="lable_class">Country:</label>
             <Field
               name="country"
@@ -78,7 +78,8 @@
             />
             <ErrorMessage name="country" class="error-feedback color" />
           </div>
-          Your order:
+          <hr/>
+          History order:
           <BasketProductForOrderCard 
           v-for="productToOrder in basket"
           :key="productToOrder.id"
@@ -109,7 +110,7 @@ import * as yup from "yup";
 import BasketProductForOrderCard from "../components/BasketProductForOrderCard.vue";
 
 export default {
-  name: "RegisterPage",
+  name: "OrderPage",
   components: {
     Form,
     Field,
@@ -173,7 +174,6 @@ export default {
       this.message = "";
       this.successful = false;
       this.loading = true;
-      console.log("ORDER");
       this.$store
         .dispatch("order/saveOrderEvent", {
           userid: this.currentUser.user.Id,
@@ -210,6 +210,5 @@ export default {
 ._form {
   width: 400px;
   padding: 10px;
-  margin: 10px;
 }
 </style>

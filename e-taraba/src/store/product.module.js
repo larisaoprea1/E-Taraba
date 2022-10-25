@@ -14,6 +14,9 @@ export const product = {
     },
     GET_PRODUCT(state, product){
       state.product = product;
+    },
+    ADD_PRODUCT(state, product){
+      state.products.push(product);
     }
   },
   actions: {
@@ -40,5 +43,14 @@ export const product = {
           });
       }
     },
+    async addProductEvent({commit}, product ){
+      return await ProductServices.addProduct(product)
+      .then(() => {
+        commit("ADD_PRODUCT", product);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    }
   },
 };

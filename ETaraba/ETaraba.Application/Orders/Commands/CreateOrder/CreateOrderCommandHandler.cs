@@ -48,9 +48,14 @@ namespace ETaraba.Application.Orders.Commands.CreateOrder
                     Quantity = basketProduct.Quantity,
                     Price = basketProduct.Price
                 };
+                if (basketProduct.Product.Quantity< orderProduct.Quantity)
+                {
+                    return null;
+                }
+                basketProduct.Product.Quantity = basketProduct.Product.Quantity - orderProduct.Product.Quantity;
                 orderTotal += basketProduct.Price;
                 await _orderProductRepository.AddOrderProductAsync(orderProduct);
-            }
+            }    
             order.Total = orderTotal;
             basket.BasketProducts.Clear();
             await _orderProductRepository.SaveAsync();

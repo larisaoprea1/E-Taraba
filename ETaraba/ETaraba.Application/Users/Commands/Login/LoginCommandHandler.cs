@@ -28,6 +28,9 @@ namespace ETaraba.Application.Users.Commands.Login
             var userExists = await _userManager.FindByEmailAsync(request.Email);
             if (userExists != null && await _userManager.CheckPasswordAsync(userExists, request.Password))
             {
+                var userRoles = await _userManager.GetRolesAsync(userExists);
+                var isAdmin = new Claim("IsAdmin", true.ToString(), ClaimValueTypes.Boolean);
+                var notAdmin = new Claim("IsAdmin", false.ToString(), ClaimValueTypes.Boolean);
                 var claimsForToken = new List<Claim>
                 {
                     new Claim("Id", userExists.Id.ToString()),
@@ -39,7 +42,18 @@ namespace ETaraba.Application.Users.Commands.Login
                     new Claim("IsLoggedIn", true.ToString(), ClaimValueTypes.Boolean),
                     new Claim(ClaimTypes.NameIdentifier,userExists.UserName),
                     new Claim("BasketId", userExists.BasketId.ToString()),
+                    notAdmin
                 };
+                foreach (var userRole in userRoles)
+                {
+                    claimsForToken.Add(new Claim(ClaimTypes.Role, userRole));
+
+                    if (userRole.Equals("Admin"))
+                    {
+                        claimsForToken.Remove(notAdmin);
+                        claimsForToken.Add(isAdmin);
+                    }
+                }
                 var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Authentication:Token"]));
                 var token = new JwtSecurityToken(
                     issuer: _configuration["Authentication:Issuer"],

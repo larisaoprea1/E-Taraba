@@ -70,6 +70,10 @@ namespace ETaraba.Controllers
                 UserId = Id,
                 Order = order
             });
+            if(result == null)
+            {
+                return BadRequest("400");
+            }
             var orderCreated = _mapper.Map<OrderDTO>(result);
             return Ok(orderCreated);
         }
