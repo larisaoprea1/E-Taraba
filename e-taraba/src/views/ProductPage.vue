@@ -8,6 +8,7 @@
         <div>
           <h5 class="title">{{ product.name }}</h5>
           <p class="__price">{{ product.price }} lei</p>
+          <p>{{product.quantity}} pieces left</p>
         </div>
         <div class="__addtocart">
           <input

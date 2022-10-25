@@ -3,7 +3,6 @@ import ProductServices from "@/services/ProductServices";
 const initialState = {
   products: [],
   product: {},
-  searchString: ""
 };
 
 export const product = {

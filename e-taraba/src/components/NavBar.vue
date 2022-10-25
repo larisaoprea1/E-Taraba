@@ -18,8 +18,8 @@
       </router-link></el-menu-item
     >
     <el-menu-item index="2"
-      ><router-link :to="{ name: 'about' }" class="nav-link flex-grow"
-        >About</router-link
+      ><router-link :to="{ name: 'AddProducts' }" class="nav-link flex-grow"
+        >Add Product</router-link
       ></el-menu-item
     >
     <div class="flex-grow" />

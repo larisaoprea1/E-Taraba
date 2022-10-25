@@ -15,5 +15,14 @@ export default {
   },
   getProduct(id){
     return apiClient.get(`/${id}`)
-  }
+  },
+  addProduct(product){
+    return apiClient.post('/addproduct', {
+      name: product.name,
+      description: product.description,
+      productPhoto: product.productPhoto,
+      quantity: product.quantity,
+      price: product.price
+    })
+  },
 };
