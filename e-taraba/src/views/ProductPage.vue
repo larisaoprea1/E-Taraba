@@ -9,6 +9,7 @@
           <h5 class="title">{{ product.name }}</h5>
           <p class="__price">{{ product.price }} lei</p>
           <p>{{product.quantity}} pieces left</p>
+          <p v-if="product.quantity === 0">Sorry the product is out of stock, try later</p>
         </div>
         <div class="__addtocart">
           <input
@@ -28,6 +29,7 @@
             <option value="5" />
           </datalist>
           <br />
+          <button v-if="product.quantity === 0" class="btn btn-dark" disabled> <font-awesome-icon icon="fa-solid fa-cart-shopping" />Add to Cart</button>
           <a @click.prevent="handleAddToCart" class="btn btn-dark mt-2"
             ><font-awesome-icon icon="fa-solid fa-cart-shopping" />Add to
             Cart</a

@@ -65,7 +65,7 @@ namespace ETaraba.Controllers
             return CreatedAtAction(nameof(GetProduct), new { productId = createdProductToReturn.Id }, createdProductToReturn);
         }
         [HttpPut]
-        [Route("updateproduct/${productId}")]
+        [Route("updateproduct/{productId}")]
         public async Task<ActionResult<ProductDTO>> UpdateProduct([FromRoute] Guid productId, ProductForUpdatingDTO product)
         {
             var result = await _mediator.Send(new UpdateProductCommand
@@ -85,7 +85,7 @@ namespace ETaraba.Controllers
             return Ok(mapResult);
         }
         [HttpDelete]
-        [Route("deleteproduct/${productId}")]
+        [Route("deleteproduct/{productId}")]
         public async Task<IActionResult> DeleteProduct([FromRoute] Guid productId)
         {
             await _mediator.Send(new DeleteProductCommand

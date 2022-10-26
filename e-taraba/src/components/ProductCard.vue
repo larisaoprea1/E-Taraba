@@ -9,13 +9,20 @@
         :src="product.productPhoto"
         class="card-img-top"
         :alt="product.name"
+        style="height: 250px"
       />
      </router-link>
-      <div class="card-body">
+            
+      <div class="card-body" >
         <hr />
         <h5 class="card-title">{{ product.name }}</h5>
         <p class="card-text __bold">{{ product.price }} lei</p>
-        <a @click="handleRemoveProduct"><i class="pi pi-trash"></i></a>
+        <div v-if="currentUser" class="_container_buttons"> 
+          <p v-if="product.quantity === 0"> Sorry this item is not in stock!</p>  
+          <a v-else class="btn btn-dark rounded-pill _button" @click="handleAddToCart">Add to cart</a> 
+          <a v-if="currentUser.user.IsAdmin" @click="handleRemoveProduct"><i class="pi pi-trash"></i></a>
+        </div>
+        
       </div>
     </div>
   </div>
@@ -29,10 +36,22 @@ export default {
       required: true,
     },
   },
+  computed: {
+    currentUser() {
+      return this.$store.state.auth.user;
+    },
+  },
   methods:{
     handleRemoveProduct(){
-      return this.$store.dispatch("product/removeProductEvent", this.product.id)
-    }
+      return this.$store.dispatch("product/removeProductEvent", this.product.id);
+    },
+    handleAddToCart() {
+      this.$store.dispatch("basket/addProductToCartEvent", {
+        userid: this.currentUser.user.Id,
+        productid: this.product.id,
+        count: 1,
+      });
+    },
   }
 };
 </script>
@@ -48,5 +67,14 @@ export default {
 }
 .__bold {
   font-weight: bold;
+}
+._container_buttons{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+._button{
+  width: 50%;
 }
 </style>
