@@ -17,7 +17,13 @@ export const product = {
     },
     ADD_PRODUCT(state, product){
       state.products.push(product);
-    }
+    },
+    DELETE_PRODUCT(state, product) {
+      var index = state.products.findIndex(
+        (b) => b.id == product
+      );
+      state.products.splice(index, 1);
+    },
   },
   actions: {
     async fetchProducts({ commit }, searchProduct) {
@@ -51,6 +57,11 @@ export const product = {
       .catch((err) => {
         console.log(err);
       });
-    }
+    },
+    async removeProductEvent({ commit }, id) {
+      return await ProductServices.deleteProduct(id).then(() => {
+        commit("DELETE_PRODUCT", id);
+      });
+    },
   },
 };

@@ -1,21 +1,24 @@
 <template>
-  <router-link
+  <div
     class="d-flex justify-content-center __link col-lg-3 col-md-6 col-sm-6 col-12 mt-3"
-    :to="{ name: 'ProductPage', params: { id: product.id } }"
+    
   >
     <div class="card card_style mt-2" style="width: 16rem">
+      <router-link :to="{ name: 'ProductPage', params: { id: product.id } }">
       <img
         :src="product.productPhoto"
         class="card-img-top"
         :alt="product.name"
       />
+     </router-link>
       <div class="card-body">
         <hr />
         <h5 class="card-title">{{ product.name }}</h5>
         <p class="card-text __bold">{{ product.price }} lei</p>
+        <a @click="handleRemoveProduct"><i class="pi pi-trash"></i></a>
       </div>
     </div>
-  </router-link>
+  </div>
 </template>
 
 <script>
@@ -26,6 +29,11 @@ export default {
       required: true,
     },
   },
+  methods:{
+    handleRemoveProduct(){
+      return this.$store.dispatch("product/removeProductEvent", this.product.id)
+    }
+  }
 };
 </script>
 

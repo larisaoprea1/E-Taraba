@@ -13,16 +13,19 @@ export default {
   getProducts(searchProduct) {
     return apiClient.get(`/?searchProduct=${searchProduct}`);
   },
-  getProduct(id){
-    return apiClient.get(`/${id}`)
+  getProduct(id) {
+    return apiClient.get(`/${id}`);
   },
-  addProduct(product){
-    return apiClient.post('/addproduct', {
+  addProduct(product) {
+    return apiClient.post("/addproduct", {
       name: product.name,
       description: product.description,
       productPhoto: product.productPhoto,
       quantity: product.quantity,
-      price: product.price
-    })
+      price: product.price,
+    });
+  },
+  deleteProduct(id) {
+    return apiClient.delete(`/deleteproduct/${id}`);
   },
 };
