@@ -17,11 +17,13 @@
         <font-awesome-icon icon="shopping-bag" /> E-Taraba
       </router-link></el-menu-item
     >
+    <div v-if="currentUser">
     <el-menu-item index="2" v-if="currentUser.user.IsAdmin"
       ><router-link :to="{ name: 'AddProducts' }" class="nav-link flex-grow"
         >Add Product</router-link
       ></el-menu-item
     >
+  </div>
     <div class="flex-grow" />
 
     <el-menu-item index="5" v-if="currentUser"

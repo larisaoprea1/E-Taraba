@@ -88,7 +88,9 @@ export default {
       this.loading = true;
 
       this.$store.dispatch("auth/login", user).then(
-        () => {
+        (res) => {
+          console.log(res);
+          this.$store.dispatch( "basket/fetchBasket", res.user.BasketId)
           this.$router.push("/");
         },
         (error) => {

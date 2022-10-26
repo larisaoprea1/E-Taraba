@@ -1,11 +1,13 @@
 <template>
   <div class="_container">
+    
       <Form
         @submit="handleAddProduct"
         :validation-schema="schema"
         class="_form"
       >
         <div v-if="!successful">
+          <h3>Add Product</h3>
           <div class="form-group">
             <label for="name" class="lable_class">Name:</label>
             <Field
@@ -129,3 +131,13 @@ export default {
   },
 };
 </script>
+<style scoped>
+._container {
+  display: flex;
+  justify-content: center;
+}
+._form {
+  width: 400px;
+  padding: 10px;
+}
+</style>

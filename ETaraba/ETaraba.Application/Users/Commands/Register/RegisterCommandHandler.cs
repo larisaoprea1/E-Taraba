@@ -3,15 +3,18 @@ using ETaraba.Infrastructure;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
+using System.Data;
 
 namespace ETaraba.Application.Users.Commands.Register
 {
     public class RegisterCommandHandler : IRequestHandler<RegisterCommand, User>
     {
         private readonly UserManager<User> _userManager;
-        public RegisterCommandHandler(UserManager<User> userManager)
+        private readonly RoleManager<UserRole> _roleManager;
+        public RegisterCommandHandler(UserManager<User> userManager, RoleManager<UserRole> roleManager)
         {
             _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         public async Task<User> Handle(RegisterCommand request, CancellationToken cancellationToken)
@@ -35,6 +38,7 @@ namespace ETaraba.Application.Users.Commands.Register
 
             };
             var result = await _userManager.CreateAsync(usertToCreate, request.Password);
+            var addRoleToUser = await _userManager.AddToRoleAsync(usertToCreate, "User");
             return usertToCreate;
         }
     }

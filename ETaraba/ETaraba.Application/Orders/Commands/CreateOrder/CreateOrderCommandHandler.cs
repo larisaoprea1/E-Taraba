@@ -52,7 +52,7 @@ namespace ETaraba.Application.Orders.Commands.CreateOrder
                 {
                     return null;
                 }
-                basketProduct.Product.Quantity = basketProduct.Product.Quantity - orderProduct.Product.Quantity;
+                basketProduct.Product.Quantity = basketProduct.Product.Quantity - orderProduct.Quantity;
                 orderTotal += basketProduct.Price;
                 await _orderProductRepository.AddOrderProductAsync(orderProduct);
             }    

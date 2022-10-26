@@ -1,8 +1,10 @@
 <template>
   <div>
     <ImageSlider />
-    <input v-model="searchProduct" />
-    <button @click.prevent="handleSearchProduct">Search</button>
+    <div class="mt-3">
+    <input v-model="searchProduct" class="m-2" />
+    <a class="btn btn-dark rounded-pill m-2" @click.prevent="handleSearchProduct">Search</a>
+  </div>
     <div class="container">
       <div class="row">
         <ProductCard
